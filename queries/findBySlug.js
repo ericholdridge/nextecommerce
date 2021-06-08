@@ -10,6 +10,13 @@ export const findBySlug = gql`
           url
         }
       }
+      productSizeQuantity {
+      color
+      size
+      quantity
+      inStock
+      stock
+    }
     }
     allCategory {
       name

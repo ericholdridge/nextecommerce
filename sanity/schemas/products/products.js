@@ -20,6 +20,7 @@ export default {
       name: "price",
       title: "Price",
       type: "number",
+      validation: (Rule) => Rule.required(),
     },
     // slug
     {
@@ -40,9 +41,14 @@ export default {
       of: [
         {
           type: "reference",
-          to: [{ type: "category"}],
+          to: [{ type: "category" }],
         },
       ],
+    },
+    {
+      name: "productSizeQuantity",
+      title: "Product Size & Quantity",
+      type: "productSizeQuantity",
     },
   ],
 };

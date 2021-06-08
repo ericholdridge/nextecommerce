@@ -9,6 +9,7 @@ import { Select } from "@chakra-ui/select";
 import { Button } from "@chakra-ui/button";
 
 const ViewProduct = ({ products, categories }) => {
+  console.log(products);
   return (
     <Layout categories={categories}>
       {products.map((product) => (
@@ -38,8 +39,11 @@ const ViewProduct = ({ products, categories }) => {
                   STYLE
                 </FormLabel>
                 <Select bg="#f5f5f5" h="12">
-                  <option>Black / XS</option>
-                  <option>Black / S</option>
+                  {product?.productSizeQuantity?.map((item) => (
+                    <option>
+                      {item.color} {item.size}
+                    </option>
+                  ))}
                 </Select>
               </FormControl>
               <FormControl maxWidth="130px">
@@ -47,11 +51,13 @@ const ViewProduct = ({ products, categories }) => {
                   QUANTITY
                 </FormLabel>
                 <Select bg="#f5f5f5" h="12">
-                  <option>1</option>
+                  <option value="">1</option>
                 </Select>
               </FormControl>
             </Flex>
-            <Button bg="#5828e8" w="100%" color="#fff" mt="6" fontSize="14">ADD TO CART</Button>
+            <Button bg="#5828e8" w="100%" color="#fff" mt="6" fontSize="14">
+              ADD TO CART
+            </Button>
           </Box>
         </Flex>
       ))}
@@ -66,6 +72,8 @@ export const getServerSideProps = async ({ params }) => {
       slug: `${params.slug}`,
     },
   });
+
+  // console.log(response.data.allProducts);
   return {
     props: {
       products: response.data.allProducts,
