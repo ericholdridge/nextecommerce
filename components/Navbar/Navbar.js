@@ -6,7 +6,7 @@ import { Text } from "@chakra-ui/layout";
 import NextLink from "next/link";
 import SwitchMode from "../Theme";
 
-const Navbar = ({ categories }) => {
+const Navbar = ({ categories, cart }) => {
   return (
     <Flex as="nav" alignItems="center" justify="space-between" py="6">
       <Flex alignItems="center">

@@ -10,22 +10,11 @@ export default {
       description: "Color of the product",
     },
     {
-      title: "Size",
+      title: "Product Sizes",
       name: "size",
-      type: "string",
+      type: "array",
+      of: [{type: 'string'}],
       description: "The size of the product. Ex: S, M, L",
-    },
-    {
-      title: "Quantity",
-      name: "quantity",
-      description:
-        "The number of items the user can select in the quantity dropdown.",
-      type: "array", 
-      of: [
-        {
-          type: "number"
-        }
-      ]
     },
     {
       title: "In stock?",

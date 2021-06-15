@@ -22,6 +22,11 @@ export default {
       type: "number",
       validation: (Rule) => Rule.required(),
     },
+    {
+      name: "description",
+      title: "Description",
+      type: "string",
+    },
     // slug
     {
       name: "slug",

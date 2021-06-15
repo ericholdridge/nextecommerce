@@ -6,18 +6,19 @@ import { findCategoryIdFromCategorySlug } from "../../queries/findCategoryIdFrom
 import { findProductsFromCategoryId } from "../../queries/findProductsFromCategoryId";
 import { findBySlug } from "../../queries/findBySlug";
 
-const Category = ({ products, categories }) => {
+const Category = ({ products, categories, categoryName }) => {
+
   return (
     <Layout categories={categories}>
-      <Text
-        as="h1"
-        fontSize="6xl"
-        textColor="#6B46C1"
-        fontWeight="bold"
-        py="10"
-      >
-        Hoodies
-      </Text>
+        <Text
+          as="h1"
+          fontSize="6xl"
+          textColor="#6B46C1"
+          fontWeight="bold"
+          py="10"
+        >
+          {categoryName}
+        </Text>
       <SimpleGrid columns={3} spacing={14}>
         {products.map((product) => (
           <Product product={product} />
@@ -53,6 +54,7 @@ export const getServerSideProps = async ({ params }) => {
     props: {
       products: products.data.allProducts,
       categories: getCategories.data.allCategory,
+      categoryName: categoryId.data.allCategory[0].name,
     },
   };
 };
