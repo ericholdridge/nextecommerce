@@ -56,7 +56,11 @@ const Navbar = ({ categories, cart }) => {
         <SwitchMode />
         <Text mx="4">English</Text>
         <Search2Icon w={5} h={5} mx="4" />
-        <Icon as={AiOutlineShoppingCart} w={6} h={6} />
+        <NextLink href="/cart" passHref>
+          <Link>
+            <Icon as={AiOutlineShoppingCart} w={6} h={6} />
+          </Link>
+        </NextLink>
       </Flex>
     </Flex>
   );

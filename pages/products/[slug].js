@@ -25,8 +25,7 @@ const ViewProduct = ({ products, categories }) => {
         name: product.name,
         price: product.price,
         quantity: itemQuantity,
-        style: product.productSizeQuantity[0].color,
-        size: product.productSizeQuantity[0].size,
+        size: size,
       },
     ]);
   };
