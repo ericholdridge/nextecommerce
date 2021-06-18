@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import Image from "next/image";
 import { Box, Heading, Flex } from "@chakra-ui/layout";
@@ -9,26 +9,11 @@ import { Select } from "@chakra-ui/select";
 import { Button } from "@chakra-ui/button";
 import { SimpleGrid } from "@chakra-ui/layout";
 import Radio from "../../components/Radio/Radio";
+import { CartContext } from "../../components/Context/CartContext";
 
 const ViewProduct = ({ products, categories }) => {
-  const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const initialQuantity = quantity[0];
-  const [itemQuantity, setItemQuantity] = useState(initialQuantity);
-  const [size, setSize] = useState("");
-  const [cart, setCart] = useState([]);
-
-  // Add product to the cart
-  const addProductToCart = (product) => {
-    setCart((prevCart) => [
-      ...prevCart,
-      {
-        name: product.name,
-        price: product.price,
-        quantity: itemQuantity,
-        size: size,
-      },
-    ]);
-  };
+  const { setSize, cart, addProductToCart, quantity, setItemQuantity } =
+    useContext(CartContext);
 
   return (
     <Layout categories={categories} cart={cart}>

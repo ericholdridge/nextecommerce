@@ -4,7 +4,6 @@ import React from "react";
 const Footer = () => {
   return (
     <Box as="footer">
-      <Text>This is the footer</Text>
     </Box>
   );
 };

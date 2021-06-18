@@ -1,12 +1,14 @@
 import "../styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/react"
-
+import { ChakraProvider } from "@chakra-ui/react";
+import { CartWrapper } from "../components/Context/CartContext";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <CartWrapper>
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </CartWrapper>
   );
 }
 

@@ -1,12 +1,16 @@
-import { Flex, Link } from "@chakra-ui/layout";
+import { Box, Flex, Link } from "@chakra-ui/layout";
 import { Icon } from "@chakra-ui/icons";
 import { Search2Icon } from "@chakra-ui/icons";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Text } from "@chakra-ui/layout";
 import NextLink from "next/link";
 import SwitchMode from "../Theme";
+import { useContext } from "react";
+import { CartContext } from "../Context/CartContext";
 
-const Navbar = ({ categories, cart }) => {
+const Navbar = ({ categories }) => {
+  const { cart } = useContext(CartContext);
+  console.log(cart);
   return (
     <Flex as="nav" alignItems="center" justify="space-between" py="6">
       <Flex alignItems="center">
@@ -58,7 +62,10 @@ const Navbar = ({ categories, cart }) => {
         <Search2Icon w={5} h={5} mx="4" />
         <NextLink href="/cart" passHref>
           <Link>
-            <Icon as={AiOutlineShoppingCart} w={6} h={6} />
+            <Box position="relative">
+              {cart.length > 0 ? <Box>Cart</Box> : null}
+              <Icon as={AiOutlineShoppingCart} w={6} h={6} />
+            </Box>
           </Link>
         </NextLink>
       </Flex>

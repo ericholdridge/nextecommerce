@@ -14,18 +14,14 @@ const Product = ({ product }) => {
         p="6"
         cursor="pointer"
       >
-        <Image
-          src={product?.image?.asset?.url}
-          // src="https://gatsby-graphcms-ecommerce-starter.netlify.app/static/3c1d76b7458d0a6c2d0d16bb0a950200/af144/8514b5cfc86d29a6a15591cc0f5afbaf_preview.png"
-          // alt="Picture of the author"
-          width={330}
-          height={330}
-        />
+        <Image src={product?.image?.asset?.url} width={330} height={330} />
         <Box pt="8">
           <Text textAlign="center" fontSize="lg" fontWeight="bold">
             {product.name}
           </Text>
-          <Text align="center" color="#888" fontSize="14" pt="2">{product.price}</Text>
+          <Text align="center" color="#888" fontSize="14" pt="2">
+            {product.price}
+          </Text>
         </Box>
       </Flex>
     </NextLink>
