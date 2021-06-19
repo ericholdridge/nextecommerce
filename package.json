@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "browser":{
+    "child_process": false
+    },
   "dependencies": {
     "@apollo/client": "^3.3.19",
     "@chakra-ui/icons": "^1.0.13",
