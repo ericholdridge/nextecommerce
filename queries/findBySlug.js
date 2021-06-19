@@ -6,6 +6,9 @@ export const findBySlug = gql`
       description
       name
       price
+      slug {
+        current
+      }
       image {
         asset {
           url
