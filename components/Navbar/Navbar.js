@@ -10,7 +10,6 @@ import { CartContext } from "../Context/CartContext";
 
 const Navbar = ({ categories }) => {
   const { cart } = useContext(CartContext);
-  console.log(cart);
   return (
     <Flex as="nav" alignItems="center" justify="space-between" py="6">
       <Flex alignItems="center">
@@ -63,7 +62,17 @@ const Navbar = ({ categories }) => {
         <NextLink href="/cart" passHref>
           <Link>
             <Box position="relative">
-              {cart.length > 0 ? <Box>Cart</Box> : null}
+              {cart.length > 0 ? (
+                <Box
+                  width="2"
+                  height="2"
+                  background="#6B46C1"
+                  borderRadius="50%"
+                  position="absolute"
+                  top="-1"
+                  right="-2"
+                ></Box>
+              ) : null}
               <Icon as={AiOutlineShoppingCart} w={6} h={6} />
             </Box>
           </Link>

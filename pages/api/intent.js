@@ -1,4 +1,4 @@
-const stripe = require("stripe")("sk_test_X36cH7sG8ETI9igvqeIcj0fa");
+const stripe = require("stripe")(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 import client from "../../utils/graphClient";
 import { getPricesFromMultipleSlugs } from "../../queries/getPricesFromMultipleSlugs";
 
@@ -19,7 +19,7 @@ export default async (req, res) => {
 
     // Assuming the request came through fine.... create an array of slugs
     const slugs = cart.map((product) => product.slug);
-    console.log(slugs);
+
 
     // Get price for all items in the cart through GQL
     const response = await client.query({

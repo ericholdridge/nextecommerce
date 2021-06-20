@@ -1,4 +1,5 @@
 import React, { useState, createContext } from "react";
+import { v4 as uuid_v4 } from "uuid";
 
 export const CartContext = createContext();
 
@@ -12,7 +13,7 @@ export const CartWrapper = ({ children }) => {
   // Add product to the cart
   const addProductToCart = (product) => {
     setCart((prevCart) => [
-      ...prevCart, 
+      ...prevCart,
       {
         name: product.name,
         slug: product.slug.current,
@@ -20,8 +21,14 @@ export const CartWrapper = ({ children }) => {
         quantity: itemQuantity,
         size: size,
         image: product.image.asset.url,
+        id: uuid_v4(),
       },
     ]);
+  };
+
+  // Remove item from the cart
+  const handleRemoveItem = (selectedItem) => {
+    setCart(cart.filter((product) => product.id !== selectedItem));
   };
 
   return (
@@ -34,6 +41,7 @@ export const CartWrapper = ({ children }) => {
         addProductToCart,
         quantity,
         setItemQuantity,
+        handleRemoveItem,
       }}
     >
       {children}

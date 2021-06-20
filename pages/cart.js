@@ -8,7 +8,7 @@ import { CartContext } from "../components/Context/CartContext";
 import NextLink from "next/link";
 
 const Cart = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, handleRemoveItem } = useContext(CartContext);
   return (
     <Layout>
       <Heading as="h2" color="#6B46C1" py="6" size="3xl">
@@ -38,6 +38,7 @@ const Cart = () => {
                     {item.name} - {item.size}
                   </Text>
                   <Button
+                    onClick={() => handleRemoveItem(item.id)}
                     fontSize="sm"
                     bg="none"
                     color="#888"

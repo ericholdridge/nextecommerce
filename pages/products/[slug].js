@@ -10,10 +10,12 @@ import { Button } from "@chakra-ui/button";
 import { SimpleGrid } from "@chakra-ui/layout";
 import Radio from "../../components/Radio/Radio";
 import { CartContext } from "../../components/Context/CartContext";
+import { useToast } from "@chakra-ui/react";
 
 const ViewProduct = ({ products, categories }) => {
   const { setSize, cart, addProductToCart, quantity, setItemQuantity } =
     useContext(CartContext);
+  const toast = useToast();
 
   return (
     <Layout categories={categories} cart={cart}>
@@ -63,8 +65,20 @@ const ViewProduct = ({ products, categories }) => {
               </FormControl>
             </Box>
             <Button
-              onClick={() => addProductToCart(product)}
-              bg="#5828e8"
+              onClick={() =>
+                addProductToCart(
+                  product,
+                  toast({
+                    position: "top-right",
+                    render: () => (
+                      <Box color="white" fontWeight="bold" p={3} bg="#6B46C1" borderRadius="4">
+                        Product added to cart
+                      </Box>
+                    ),
+                  })
+                )
+              }
+              bg="#6B46C1"
               w="100%"
               color="#fff"
               mt="6"

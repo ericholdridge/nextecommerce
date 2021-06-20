@@ -89,9 +89,7 @@ const CheckoutForm = () => {
         },
       },
     });
-    console.log("vals: ", values);
-    console.log(result);
-    // I guess you can carry on from here. Finish adding your validate shit on the inputs and stripe should work as expected 
+    // I guess you can carry on from here. Finish adding your validate shit on the inputs and stripe should work as expected
   };
 
   const iframeStyles = {
@@ -246,48 +244,41 @@ const CheckoutForm = () => {
             </Select>
           </FormControl>
         </Flex>
-        <FormControl id="zipcode" isRequired w="48%">
-          <Input
-            type="text"
-            placeholder="ZIP / Postcode"
-            py="6"
-            background="#f5f5f5"
-            border="2px solid #e2e8f0"
-            {...register("zipCode", {
-              required: "This field is required",
-              maxLength: 60,
-            })}
-          />
-        </FormControl>
-        <FormControl id="state" isRequired w="48%">
-          <Input
-            type="text"
-            placeholder="State"
-            py="6"
-            background="#f5f5f5"
-            border="2px solid #e2e8f0"
-            {...register("state", {
-              required: "This field is required",
-              maxLength: 60,
-            })}
-          />
-        </FormControl>
-        <Flex alignItems="center" mt="6">
+        <Flex justifyContent="space-between" my="4">
+          <FormControl id="zipcode" isRequired w="48%">
+            <Input
+              type="text"
+              placeholder="ZIP / Postcode"
+              py="6"
+              background="#f5f5f5"
+              border="2px solid #e2e8f0"
+              {...register("zipCode", {
+                required: "This field is required",
+                maxLength: 60,
+              })}
+            />
+          </FormControl>
+          <FormControl id="state" isRequired w="48%">
+            <Input
+              type="text"
+              placeholder="State"
+              py="6"
+              background="#f5f5f5"
+              border="2px solid #e2e8f0"
+              {...register("state", {
+                required: "This field is required",
+                maxLength: 60,
+              })}
+            />
+          </FormControl>
+        </Flex>
+        <Box mt="6">
           <FormControl as="fieldset">
             <RadioGroup>
               <Radio>Use different billing address</Radio>
             </RadioGroup>
           </FormControl>
-          {/* <Button
-            background="#5828e8"
-            type="submit"
-            color="#fff"
-            px="7"
-            onClick={handleSubmit}
-          >
-            Calculate shipping
-          </Button> */}
-        </Flex>
+        </Box>
         {/* Until there is an intent, we show a spinner... you can change this to look like w/e you like */}
         {!clientSecret ? (
           <Spinner
@@ -295,7 +286,8 @@ const CheckoutForm = () => {
             speed="0.65s"
             emptyColor="gray.200"
             color="blue.500"
-            size="xl"
+            size="lg"
+            mt="4"
           />
         ) : (
           <form onSubmit={handleSubmit}>
@@ -309,7 +301,7 @@ const CheckoutForm = () => {
             >
               <CardElement options={cardElementOpts} />
             </Box>
-            <Button type="submit" disabled={!stripe}>
+            <Button type="submit" disabled={!stripe} mt="4">
               Pay
             </Button>
           </form>
