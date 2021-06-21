@@ -1,5 +1,4 @@
-import { Heading, Box, Flex, Text, Link } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/react";
+import { Heading, Box, Flex, Text, Link, Button } from "@chakra-ui/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Layout from "../components/Layout/Layout";
 import Image from "next/image";
@@ -9,6 +8,13 @@ import NextLink from "next/link";
 
 const Cart = () => {
   const { cart, handleRemoveItem } = useContext(CartContext);
+
+  // Calculate the subtotal of all products in the cart
+  const itemPrices = cart?.map((item) => item.price);
+  const subtotal = itemPrices?.reduce(function (accumulator, currentValue) {
+    return accumulator + currentValue;
+  }, 0);
+
   return (
     <Layout>
       <Heading as="h2" color="#6B46C1" py="6" size="3xl">
@@ -81,7 +87,7 @@ const Cart = () => {
               fontWeight="bold"
               fontSize="2xl"
             >
-              19,00
+              {subtotal}
             </Box>
             <NextLink href="/checkout" passhref>
               <Link

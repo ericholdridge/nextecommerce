@@ -89,7 +89,6 @@ const CheckoutForm = () => {
         },
       },
     });
-    // I guess you can carry on from here. Finish adding your validate shit on the inputs and stripe should work as expected
   };
 
   const iframeStyles = {
@@ -168,7 +167,7 @@ const CheckoutForm = () => {
                 required: "This field is required",
                 maxLength: 60,
                 validate: {
-                  validateEmailasdasdasd: (v) =>
+                  validateEmail: (v) =>
                     isEmail(v) || "You must supply a valid email address.",
                 },
               })}
@@ -184,6 +183,7 @@ const CheckoutForm = () => {
               type="text"
               placeholder="Contact no."
               py="6"
+              isInvalid={errors.contactNo}
               background="#f5f5f5"
               border="2px solid #e2e8f0"
               {...register("contactNo", {
@@ -191,6 +191,11 @@ const CheckoutForm = () => {
                 maxLength: 15,
               })}
             />
+            {errors.contactNo && (
+              <Text mt="1" color="red.500">
+                {errors.contactNo.message}
+              </Text>
+            )}
           </FormControl>
         </Flex>
         <FormControl id="address" isRequired width="full">
@@ -200,11 +205,17 @@ const CheckoutForm = () => {
             py="6"
             background="#f5f5f5"
             border="2px solid #e2e8f0"
+            isInvalid={errors.address}
             {...register("address", {
               required: "This field is required",
               maxLength: 60,
             })}
           />
+          {errors.address && (
+            <Text mt="1" color="red.500">
+              {errors.address.message}
+            </Text>
+          )}
         </FormControl>
         <FormControl id="apartment" isRequired width="full">
           <Input
@@ -214,8 +225,17 @@ const CheckoutForm = () => {
             mt="4"
             background="#f5f5f5"
             border="2px solid #e2e8f0"
-            {...register("apartment")}
+            isInvalid={errors.apartment}
+            {...register("apartment", {
+              required: "This field is required",
+              maxLength: 60,
+            })}
           />
+          {errors.apartment && (
+            <Text mt="1" color="red.500">
+              {errors.apartment.message}
+            </Text>
+          )}
         </FormControl>
         <Flex justifyContent="space-between" my="4">
           <FormControl id="city" isRequired w="48%">
@@ -225,10 +245,24 @@ const CheckoutForm = () => {
               py="6"
               background="#f5f5f5"
               border="2px solid #e2e8f0"
-              {...register("city")}
+              isInvalid={errors.city}
+              {...register("city", {
+                required: "This field is required",
+                maxLength: 60,
+              })}
             />
+            {errors.city && (
+              <Text mt="1" color="red.500">
+                {errors.city.message}
+              </Text>
+            )}
           </FormControl>
-          <FormControl id="country" isRequired width="48%">
+          <FormControl
+            id="country"
+            isRequired
+            width="48%"
+            isInvalid={errors.country}
+          >
             <Select
               type="text"
               background="#f5f5f5"
@@ -242,6 +276,11 @@ const CheckoutForm = () => {
               <option value="US">United States</option>
               <option value="Germany">Germany</option>
             </Select>
+            {errors.country && (
+              <Text mt="1" color="red.500">
+                {errors.country.message}
+              </Text>
+            )}
           </FormControl>
         </Flex>
         <Flex justifyContent="space-between" my="4">
@@ -252,11 +291,17 @@ const CheckoutForm = () => {
               py="6"
               background="#f5f5f5"
               border="2px solid #e2e8f0"
+              isInvalid={errors.zipCode}
               {...register("zipCode", {
                 required: "This field is required",
                 maxLength: 60,
               })}
             />
+            {errors.zipCode && (
+              <Text mt="1" color="red.500">
+                {errors.zipCode.message}
+              </Text>
+            )}
           </FormControl>
           <FormControl id="state" isRequired w="48%">
             <Input
@@ -265,11 +310,17 @@ const CheckoutForm = () => {
               py="6"
               background="#f5f5f5"
               border="2px solid #e2e8f0"
+              isInvalid={errors.state}
               {...register("state", {
                 required: "This field is required",
                 maxLength: 60,
               })}
             />
+            {errors.state && (
+              <Text mt="1" color="red.500">
+                {errors.state.message}
+              </Text>
+            )}
           </FormControl>
         </Flex>
         <Box mt="6">

@@ -10,12 +10,12 @@ import { Button } from "@chakra-ui/button";
 import { SimpleGrid } from "@chakra-ui/layout";
 import Radio from "../../components/Radio/Radio";
 import { CartContext } from "../../components/Context/CartContext";
-import { useToast } from "@chakra-ui/react";
+import { createStandaloneToast } from "@chakra-ui/react";
 
 const ViewProduct = ({ products, categories }) => {
   const { setSize, cart, addProductToCart, quantity, setItemQuantity } =
     useContext(CartContext);
-  const toast = useToast();
+  const toast = createStandaloneToast();
 
   return (
     <Layout categories={categories} cart={cart}>
@@ -70,8 +70,16 @@ const ViewProduct = ({ products, categories }) => {
                   product,
                   toast({
                     position: "top-right",
+                    duration: 1000,
                     render: () => (
-                      <Box color="white" fontWeight="bold" p={3} bg="#6B46C1" borderRadius="4">
+                      <Box
+                        color="white"
+                        fontWeight="bold"
+                        p={3}
+                        bg="#6B46C1"
+                        borderRadius="4"
+                        mt="14"
+                      >
                         Product added to cart
                       </Box>
                     ),
