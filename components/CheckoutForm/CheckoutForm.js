@@ -2,14 +2,13 @@ import {
   Button,
   FormControl,
   Input,
-  Radio,
-  RadioGroup,
   Select,
   Text,
   Box,
   Flex,
   Heading,
   Spinner,
+  createStandaloneToast,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../Context/CartContext";
@@ -18,14 +17,27 @@ import { CardElement } from "@stripe/react-stripe-js";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
+import { useRouter } from "next/router";
+import { calculateCartTotal } from "../../utils/calculateCartTotal";
 
 const CheckoutForm = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const toast = createStandaloneToast();
   const { cart } = useContext(CartContext);
   const [clientSecret, setClientSecret] = useState(null);
+  const [result, setResult] = useState(null);
+  const {
+    register,
+    getValues,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm();
+  const stripe = useStripe();
+  const elements = useElements();
 
   // On page load, send all cart items to /api/intent to generate the intent.
   // The intent tells Stripe how much to charge. This is why it's important to calculate this on the server side
-  // Else I could change cart amount from $500 to $0.50 via inspect element
   useEffect(() => {
     // Send all items in the cart to the intent API to get a intent.
     fetch("/api/intent", {
@@ -38,40 +50,23 @@ const CheckoutForm = () => {
       .then((resp) => resp.json())
       .then((data) => setClientSecret(data.clientSecret)) // set the intent into state
       .catch((error) => console.log(error));
-  }, []);
-
-  const {
-    register,
-    getValues,
-    trigger,
-    formState: { errors, isValid },
-  } = useForm();
-  const stripe = useStripe();
-  const elements = useElements();
+  }, [isValid]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const values = getValues();
-    trigger();
-    if (!isValid) {
-      return;
-    }
+    trigger(); // triggers validation to run on the form
 
     if (!stripe || !elements) {
       return;
     }
-
     const cardElement = elements.getElement(CardElement);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: cardElement,
     });
 
-    if (error) {
-      console.log("[error]", error);
-    } else {
-      console.log("[PaymentMethod]", paymentMethod);
-    }
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
@@ -80,7 +75,6 @@ const CheckoutForm = () => {
             city: values.city,
             country: "US",
             line1: values.address,
-
             postal_code: values.zipCode,
             state: values.state,
           },
@@ -89,6 +83,24 @@ const CheckoutForm = () => {
         },
       },
     });
+    setResult(result);
+
+    // If the form values are not set by the user,
+    if (result?.error?.type) {
+      setLoading(false);
+      toast({
+        title: "Error",
+        position: "top",
+        description: "Form values are required",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+      // The paymentIntent has succeeded so we send the user to the success page
+    } else {
+      setLoading(false);
+      router.push("/success");
+    }
   };
 
   const iframeStyles = {
@@ -129,6 +141,7 @@ const CheckoutForm = () => {
         py="8"
         px="6"
         minW="750px"
+        maxWidth="750px"
         position="sticky"
         top="0"
       >
@@ -225,17 +238,7 @@ const CheckoutForm = () => {
             mt="4"
             background="#f5f5f5"
             border="2px solid #e2e8f0"
-            isInvalid={errors.apartment}
-            {...register("apartment", {
-              required: "This field is required",
-              maxLength: 60,
-            })}
           />
-          {errors.apartment && (
-            <Text mt="1" color="red.500">
-              {errors.apartment.message}
-            </Text>
-          )}
         </FormControl>
         <Flex justifyContent="space-between" my="4">
           <FormControl id="city" isRequired w="48%">
@@ -323,12 +326,24 @@ const CheckoutForm = () => {
             )}
           </FormControl>
         </Flex>
-        <Box mt="6">
-          <FormControl as="fieldset">
-            <RadioGroup>
-              <Radio>Use different billing address</Radio>
-            </RadioGroup>
-          </FormControl>
+        <Box>
+          <Text fontSize="md" fontStyle="italic">
+            This is a{" "}
+            <Text as="span" fontWeight="bold" fontStyle="italic">
+              test checkout
+            </Text>
+            . You can simulate transactions using any valid expiry date, CVC
+            code and{" "}
+            <Text
+              as="span"
+              bg="#f5f5f5"
+              p="0.5"
+              display="inline-block"
+              borderRadius="4"
+            >
+              4242 4242 4242 4242
+            </Text>
+          </Text>
         </Box>
         {/* Until there is an intent, we show a spinner... you can change this to look like w/e you like */}
         {!clientSecret ? (
@@ -352,15 +367,46 @@ const CheckoutForm = () => {
             >
               <CardElement options={cardElementOpts} />
             </Box>
-            <Button type="submit" disabled={!stripe} mt="4">
-              Pay
-            </Button>
+            {result?.error ? (
+              <Text color="red.500" mt="1">
+                {result?.error?.message}
+              </Text>
+            ) : null}
+            {loading ? (
+              <Button type="submit" disabled={!stripe} mt="4">
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="sm"
+                />
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                disabled={!stripe}
+                mt="4"
+                boxShadow="sm"
+                border="2px solid #e2e8f0"
+                bg="green.400"
+              >
+                Pay
+              </Button>
+            )}
           </form>
         )}
       </Box>
-      {/* Cart information */}
+      {/* Cart items */}
       {cart.length > 0 && (
-        <Box border="2px solid #e2e8f0" borderRadius="8" py="5" px="6">
+        <Box
+          border="2px solid #e2e8f0"
+          borderRadius="8"
+          py="5"
+          px="6"
+          minWidth="450px"
+          maxWidth="450px"
+        >
           {cart.map((item) => (
             <Flex
               minW="400px"
@@ -399,6 +445,42 @@ const CheckoutForm = () => {
               </Text>
             </Flex>
           ))}
+          {/* Show the cart subtotal */}
+          <Box mt="4">
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text fontSize="sm">Subtotal</Text>
+              <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
+                {cart ? <Text>$</Text> : null}
+                {calculateCartTotal(cart)}
+              </Flex>
+            </Flex>
+            {/* Tax */}
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text fontSize="sm">Tax</Text>
+              <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
+                {cart ? <Text>$</Text> : null}
+                {calculateCartTotal(cart)}
+              </Flex>
+            </Flex>
+            {/* Shipping */}
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text fontSize="sm">Shipping</Text>
+              <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
+                {cart ? <Text>$</Text> : null}
+                {calculateCartTotal(cart)}
+              </Flex>
+            </Flex>
+          </Box>
+          {/* Final total */}
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text fontSize="lg" fontWeight="bold">
+              Total
+            </Text>
+            <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
+              {cart ? <Text>$</Text> : null}
+              {calculateCartTotal(cart)}
+            </Flex>
+          </Flex>
         </Box>
       )}
     </Flex>

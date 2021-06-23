@@ -70,19 +70,10 @@ const ViewProduct = ({ products, categories }) => {
                   product,
                   toast({
                     position: "top-right",
-                    duration: 1000,
-                    render: () => (
-                      <Box
-                        color="white"
-                        fontWeight="bold"
-                        p={3}
-                        bg="#6B46C1"
-                        borderRadius="4"
-                        mt="14"
-                      >
-                        Product added to cart
-                      </Box>
-                    ),
+                    description: "Item added to your cart",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
                   })
                 )
               }

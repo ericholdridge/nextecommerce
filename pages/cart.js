@@ -5,18 +5,23 @@ import Image from "next/image";
 import { useContext } from "react";
 import { CartContext } from "../components/Context/CartContext";
 import NextLink from "next/link";
+import { allCategories } from "../queries/allCategories";
+import client from "../utils/graphClient";
+import { calculateCartTotal } from "../utils/calculateCartTotal";
 
-const Cart = () => {
+const Cart = ({ categories }) => {
   const { cart, handleRemoveItem } = useContext(CartContext);
 
+  // Calculate the cart subtotal
+
   // Calculate the subtotal of all products in the cart
-  const itemPrices = cart?.map((item) => item.price);
-  const subtotal = itemPrices?.reduce(function (accumulator, currentValue) {
-    return accumulator + currentValue;
-  }, 0);
+  // const itemPrices = cart?.map((item) => item.price);
+  // const subtotal = itemPrices?.reduce(function (accumulator, currentValue) {
+  //   return accumulator + currentValue;
+  // }, 0);
 
   return (
-    <Layout>
+    <Layout categories={categories}>
       <Heading as="h2" color="#6B46C1" py="6" size="3xl">
         Cart
       </Heading>
@@ -87,16 +92,17 @@ const Cart = () => {
               fontWeight="bold"
               fontSize="2xl"
             >
-              {subtotal}
+              {calculateCartTotal(cart)}
             </Box>
             <NextLink href="/checkout" passhref>
               <Link
-                bg="#5828e8"
+                bg="green.500"
                 textTransform="uppercase"
                 color="#fff"
                 mt="1"
                 fontSize="md"
-                p="2"
+                fontWeight="bold"
+                p="2.5"
                 borderRadius="4"
                 _hover={{ background: "#101b42" }}
               >
@@ -108,6 +114,18 @@ const Cart = () => {
       ) : null}
     </Layout>
   );
+};
+
+export const getServerSideProps = async () => {
+  const response = await client.query({
+    query: allCategories,
+  });
+
+  return {
+    props: {
+      categories: response.data.allCategory,
+    },
+  };
 };
 
 export default Cart;

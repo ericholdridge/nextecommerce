@@ -20,7 +20,6 @@ export default async (req, res) => {
     // Assuming the request came through fine.... create an array of slugs
     const slugs = cart.map((product) => product.slug);
 
-
     // Get price for all items in the cart through GQL
     const response = await client.query({
       query: getPricesFromMultipleSlugs,
@@ -34,7 +33,6 @@ export default async (req, res) => {
       if (items.length) {
         let total = 0;
         items.forEach((product) => {
-          console.log(product.price);
           total = total + product.price;
         });
 
@@ -47,7 +45,7 @@ export default async (req, res) => {
     // Get carts total price in cents
     const totalPrice = calculateOrderAmount(response?.data?.allProducts);
 
-    // If the total price is equal to false, something fucked up inside calculateOrderAmount - likely bad response from GQL
+    // If the total price is equal to false, something went wrong inside calculateOrderAmount - likely bad response from GQL
     if (totalPrice === false) {
       res.status(500).send("Something went wrong calculating the price.");
       return;
@@ -63,8 +61,9 @@ export default async (req, res) => {
     res.json({
       clientSecret: paymentIntent.client_secret,
     });
+    console.log(paymentIntent);
   } catch (error) {
-    // Something fucked up
+    // Something messed up
     console.error(error, error.message);
     res.status(500).send("Internal server error - intent");
   }
