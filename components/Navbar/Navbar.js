@@ -32,8 +32,12 @@ const Navbar = ({ categories }) => {
             Logo
           </Link>
         </NextLink>
-        {categories?.map((item) => (
-          <NextLink href={`/category/${item?.slug?.current}`} passHref>
+        {categories?.map((item, index) => (
+          <NextLink
+            key={index}
+            href={`/category/${item?.slug?.current}`}
+            passHref
+          >
             <Link
               py="1.5"
               px="3"
@@ -57,7 +61,6 @@ const Navbar = ({ categories }) => {
       </Flex>
       <Flex alignItems="center">
         <SwitchMode />
-        <Text mx="4">English</Text>
         <Search2Icon w={5} h={5} mx="4" />
         <NextLink href="/cart" passHref>
           <Link>

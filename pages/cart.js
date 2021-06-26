@@ -12,14 +12,6 @@ import { calculateCartTotal } from "../utils/calculateCartTotal";
 const Cart = ({ categories }) => {
   const { cart, handleRemoveItem } = useContext(CartContext);
 
-  // Calculate the cart subtotal
-
-  // Calculate the subtotal of all products in the cart
-  // const itemPrices = cart?.map((item) => item.price);
-  // const subtotal = itemPrices?.reduce(function (accumulator, currentValue) {
-  //   return accumulator + currentValue;
-  // }, 0);
-
   return (
     <Layout categories={categories}>
       <Heading as="h2" color="#6B46C1" py="6" size="3xl">
@@ -27,7 +19,7 @@ const Cart = ({ categories }) => {
       </Heading>
       {cart.length > 0 ? (
         <Box borderBottom="3px solid #f5f5f5" pb="10">
-          {cart.map((item) => (
+          {cart.map((item, i) => (
             <Flex
               w="full"
               bg="#f5f5f5"
@@ -36,6 +28,8 @@ const Cart = ({ categories }) => {
               justifyContent="space-between"
               borderRadius="4"
               mt="6"
+              boxShadow="md"
+              key={item?.id || i}
             >
               <Flex alignItems="center">
                 <Image
@@ -46,7 +40,7 @@ const Cart = ({ categories }) => {
                 />
                 <Box ml="6">
                   <Text fontWeight="medium" fontSize="md">
-                    {item.name} - {item.size}
+                    {item.name} - {item?.size}
                   </Text>
                   <Button
                     onClick={() => handleRemoveItem(item.id)}
@@ -73,7 +67,9 @@ const Cart = ({ categories }) => {
                   <Text fontWeight="medium">{item.quantity}</Text>
                   <ChevronDownIcon w={6} h={6} cursor="pointer" />
                 </Flex>
-                <Text fontWeight="medium">{item.price}</Text>
+                <Text fontWeight="medium">
+                  {item ? "$" + item.price : null}
+                </Text>
               </Flex>
             </Flex>
           ))}
@@ -96,7 +92,7 @@ const Cart = ({ categories }) => {
             </Box>
             <NextLink href="/checkout" passhref>
               <Link
-                bg="green.500"
+                bg="#6B46C1"
                 textTransform="uppercase"
                 color="#fff"
                 mt="1"
@@ -104,7 +100,7 @@ const Cart = ({ categories }) => {
                 fontWeight="bold"
                 p="2.5"
                 borderRadius="4"
-                _hover={{ background: "#101b42" }}
+                _hover={{bg: "green.400"}}
               >
                 Checkout
               </Link>

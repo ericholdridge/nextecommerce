@@ -5,23 +5,23 @@ import client from "../../utils/graphClient";
 import { findCategoryIdFromCategorySlug } from "../../queries/findCategoryIdFromCategorySlug";
 import { findProductsFromCategoryId } from "../../queries/findProductsFromCategoryId";
 import { findBySlug } from "../../queries/findBySlug";
+import { Box } from "@chakra-ui/react";
 
 const Category = ({ products, categories, categoryName }) => {
-
   return (
     <Layout categories={categories}>
-        <Text
-          as="h1"
-          fontSize="6xl"
-          textColor="#6B46C1"
-          fontWeight="bold"
-          py="10"
-        >
-          {categoryName}
-        </Text>
+      <Text
+        as="h1"
+        fontSize="6xl"
+        textColor="#6B46C1"
+        fontWeight="bold"
+        py="10"
+      >
+        {categoryName}
+      </Text>
       <SimpleGrid columns={3} spacing={14}>
-        {products.map((product) => (
-          <Product product={product} />
+        {products.map((product, index) => (
+          <Product key={index} product={product} />
         ))}
       </SimpleGrid>
     </Layout>

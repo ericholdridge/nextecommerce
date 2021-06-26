@@ -10,11 +10,11 @@ const Catalog = ({ products }) => {
         fontSize="6xl"
         textColor="#6B46C1"
         fontWeight="bold"
-        py="10"
+        pt="10"
       >
         Latest
       </Text>
-      <SimpleGrid columns={3} spacing={14}>
+      <SimpleGrid columns={3} spacing={14} py="10">
         {products.map((product) => (
           <Product product={product} key={product.name} />
         ))}

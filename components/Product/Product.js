@@ -13,6 +13,7 @@ const Product = ({ product }) => {
         borderRadius="4"
         p="6"
         cursor="pointer"
+        boxShadow="md"
       >
         <Image src={product?.image?.asset?.url} width={330} height={330} />
         <Box pt="8">
@@ -20,7 +21,7 @@ const Product = ({ product }) => {
             {product.name}
           </Text>
           <Text align="center" color="#888" fontSize="14" pt="2">
-            {product.price}
+            {product ? "$" + product.price : null}
           </Text>
         </Box>
       </Flex>

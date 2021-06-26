@@ -144,6 +144,7 @@ const CheckoutForm = () => {
         maxWidth="750px"
         position="sticky"
         top="0"
+        boxShadow="md"
       >
         <Heading as="h3" pb="8">
           Shipping
@@ -406,13 +407,15 @@ const CheckoutForm = () => {
           px="6"
           minWidth="450px"
           maxWidth="450px"
+          boxShadow="md"
         >
-          {cart.map((item) => (
+          {cart.map((item, i) => (
             <Flex
               minW="400px"
               justifyContent="space-between"
               alignItems="center"
               mt="2"
+              key={item?.id || i}
             >
               <Flex mt="4">
                 <Box position="relative">
@@ -441,7 +444,7 @@ const CheckoutForm = () => {
                 </Flex>
               </Flex>
               <Text fontSize="sm" color="#888">
-                {item.price}
+                {item ? "$" + item.price : null}
               </Text>
             </Flex>
           ))}
@@ -450,7 +453,6 @@ const CheckoutForm = () => {
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="sm">Subtotal</Text>
               <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-                {cart ? <Text>$</Text> : null}
                 {calculateCartTotal(cart)}
               </Flex>
             </Flex>
@@ -458,7 +460,6 @@ const CheckoutForm = () => {
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="sm">Tax</Text>
               <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-                {cart ? <Text>$</Text> : null}
                 {calculateCartTotal(cart)}
               </Flex>
             </Flex>
@@ -466,7 +467,6 @@ const CheckoutForm = () => {
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="sm">Shipping</Text>
               <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-                {cart ? <Text>$</Text> : null}
                 {calculateCartTotal(cart)}
               </Flex>
             </Flex>
@@ -477,7 +477,6 @@ const CheckoutForm = () => {
               Total
             </Text>
             <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-              {cart ? <Text>$</Text> : null}
               {calculateCartTotal(cart)}
             </Flex>
           </Flex>
