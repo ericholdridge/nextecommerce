@@ -20,7 +20,6 @@ const ViewProduct = ({ products, categories }) => {
     quantity,
     setItemQuantity,
     loading,
-    setLoading,
   } = useContext(CartContext);
 
   return (

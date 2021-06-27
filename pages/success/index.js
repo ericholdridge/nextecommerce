@@ -7,9 +7,9 @@ const SuccessPage = ({ categories }) => {
   return (
     <Layout categories={categories} title="Thank you for your order">
       <Heading as="h2" color="#6B46C1" pt="20" pb="10" size="3xl">
-        Thank you!
+        Success! Thank you.
       </Heading>
-      <Box mt="10">Please take note of your order reference:</Box>
+      <Box mt="4">Please take note of your order reference:</Box>
     </Layout>
   );
 };

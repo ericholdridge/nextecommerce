@@ -27,6 +27,7 @@
     "react-hook-form": "^7.9.0",
     "react-icons": "^4.2.0",
     "stripe": "^8.156.0",
+    "use-local-storage": "^2.2.1",
     "uuidv4": "^6.2.10",
     "validator": "^13.6.0"
   }

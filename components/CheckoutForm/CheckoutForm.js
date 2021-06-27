@@ -37,7 +37,8 @@ const CheckoutForm = () => {
   const elements = useElements();
 
   // On page load, send all cart items to /api/intent to generate the intent.
-  // The intent tells Stripe how much to charge. This is why it's important to calculate this on the server side
+  // The intent tells Stripe how much to charge. This is why it's important to
+  // calculate this on the server side so the user doesn't change the price on the client side.
   useEffect(() => {
     // Send all items in the cart to the intent API to get a intent.
     fetch("/api/intent", {
@@ -62,7 +63,7 @@ const CheckoutForm = () => {
       return;
     }
     const cardElement = elements.getElement(CardElement);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    await stripe.createPaymentMethod({
       type: "card",
       card: cardElement,
     });

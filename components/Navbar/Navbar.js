@@ -1,8 +1,6 @@
-import { Box, Flex, Link } from "@chakra-ui/layout";
-import { Icon } from "@chakra-ui/icons";
-import { Search2Icon } from "@chakra-ui/icons";
+import { Box, Flex, Link } from "@chakra-ui/react";
+import { Icon, Search2Icon } from "@chakra-ui/icons";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { Text } from "@chakra-ui/layout";
 import NextLink from "next/link";
 import SwitchMode from "../Theme";
 import { useContext } from "react";
@@ -65,7 +63,7 @@ const Navbar = ({ categories }) => {
         <NextLink href="/cart" passHref>
           <Link>
             <Box position="relative">
-              {cart.length > 0 ? (
+              {cart?.length > 0 ? (
                 <Box
                   width="2"
                   height="2"
