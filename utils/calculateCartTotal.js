@@ -3,5 +3,5 @@ export const calculateCartTotal = (cart) => {
   const subtotal = itemPrices?.reduce(function (accumulator, currentValue) {
     return accumulator + currentValue;
   }, 0);
-  return "$" + subtotal.toFixed(2);
+  return "$" + parseInt(subtotal).toFixed(2);
 };

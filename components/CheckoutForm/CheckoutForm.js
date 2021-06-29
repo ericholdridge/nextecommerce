@@ -445,7 +445,7 @@ const CheckoutForm = () => {
                 </Flex>
               </Flex>
               <Text fontSize="sm" color="#888">
-                {item ? "$" + item.price : null}
+                {item ? "$" + parseInt(item.price).toFixed(2) : null}
               </Text>
             </Flex>
           ))}

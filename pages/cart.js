@@ -33,7 +33,7 @@ const Cart = ({ categories }) => {
             >
               <Flex alignItems="center">
                 <Image
-                  src={item.image}
+                  src={item.image.asset.url}
                   alt={item.name}
                   width={75}
                   height={75}
@@ -43,7 +43,7 @@ const Cart = ({ categories }) => {
                     {item.name} - {item?.size}
                   </Text>
                   <Button
-                    onClick={() => handleRemoveItem(item.id)}
+                    onClick={() => handleRemoveItem(item._id)}
                     fontSize="sm"
                     bg="none"
                     color="#888"
@@ -68,7 +68,7 @@ const Cart = ({ categories }) => {
                   <ChevronDownIcon w={6} h={6} cursor="pointer" />
                 </Flex>
                 <Text fontWeight="medium">
-                  {item ? "$" + item.price : null}
+                  {item ? "$" + parseInt(item.price).toFixed(2) : null}
                 </Text>
               </Flex>
             </Flex>
@@ -100,7 +100,7 @@ const Cart = ({ categories }) => {
                 fontWeight="bold"
                 p="2.5"
                 borderRadius="4"
-                _hover={{bg: "green.400"}}
+                _hover={{ bg: "green.400" }}
               >
                 Checkout
               </Link>

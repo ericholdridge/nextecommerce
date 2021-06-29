@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const findBySlug = gql`
   query ($slug: String!) {
     allProducts(where: { slug: { current: { eq: $slug } } }) {
+      _id
       description
       name
       price
@@ -15,10 +16,10 @@ export const findBySlug = gql`
         }
       }
       productSizeQuantity {
-      inStock
-      stock
-      size
-    }
+        inStock
+        stock
+        size
+      }
     }
     allCategory {
       name

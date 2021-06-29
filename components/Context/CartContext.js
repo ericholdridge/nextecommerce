@@ -1,14 +1,12 @@
 import React, { useState, createContext, useEffect } from "react";
-import { v4 as uuid_v4 } from "uuid";
 import { createStandaloneToast } from "@chakra-ui/react";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 export const CartContext = createContext();
 
 export const CartWrapper = ({ children }) => {
   const quantity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const initialQuantity = quantity[0];
-  const [itemQuantity, setItemQuantity] = useState(initialQuantity);
+  let [itemQuantity, setItemQuantity] = useState(initialQuantity);
   const [size, setSize] = useState(null);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +17,7 @@ export const CartWrapper = ({ children }) => {
     if (data) {
       setCart(JSON.parse(data));
     }
-  }, []);
+  }, [itemQuantity]);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -27,9 +25,29 @@ export const CartWrapper = ({ children }) => {
 
   // Add product to the cart
   const addProductToCart = (product) => {
-    // Show spinner when user clicks the add to cart button
+    console.log(cart);
+    // Finds the cart item object that equals the product added
+    const exists = cart.find((x) => x._id === product._id);
+
     setLoading(true);
-    // Display an error if no size has been selected
+    // If the existing item in the cart matches the item that the user adds, update the quantity instead of completely adding the same item
+    if (exists) {
+      setCart(
+        cart.map((x) =>
+          x._id === product._id
+            ? {
+                ...exists,
+                quantity: exists.quantity + itemQuantity,
+                size: size,
+              }
+            : x
+        )
+      );
+      // If the item the user adds doesn't exist in the cart, add the new item
+    } else {
+      setCart([...cart, { ...product, quantity: itemQuantity, size: size }]);
+    }
+    // User needs to select a size/style before adding the item to the cart. If they don't, display an error message
     if (size === null) {
       setLoading(false);
       toast({
@@ -40,8 +58,9 @@ export const CartWrapper = ({ children }) => {
         isClosable: true,
         title: "Error",
       });
+      return;
     } else {
-      // If a user selected a size and adds an item to the cart, show a spinner for 1 second and then  display a succesful toast message
+      // If a user selected a size and adds an item to the cart, show a spinner for 1 second and then  display a success message
       setTimeout(() => {
         toast({
           position: "top-right",
@@ -51,44 +70,36 @@ export const CartWrapper = ({ children }) => {
           isClosable: true,
           title: "Success",
         });
-        setCart((prevCart) => [
-          ...prevCart,
-          {
-            name: product.name,
-            slug: product.slug.current,
-            price: product.price,
-            quantity: itemQuantity,
-            size: size,
-            image: product.image.asset.url,
-            id: uuid_v4(),
-          },
-        ]);
         // Hide the spinner icon after the user added the item to the cart
         setLoading(false);
-        // Set the size to null so the user can't add an item to the cart until a size is selected
-        setSize(null);
-      }, 1000);
+      }, 500);
     }
+
+    // After the product is added to the cart, get the size to null so the user can't add an item to the cart until a size is selected
+    setSize(null);
+    // After the item is added to the cart, set the itemQuantity state to 1
+    setItemQuantity(quantity[0]);
   };
 
   // Remove item from the cart
   const handleRemoveItem = (selectedItem) => {
-    setCart(cart.filter((product) => product.id !== selectedItem));
+    setCart(cart.filter((product) => product._id !== selectedItem));
   };
 
   return (
     <CartContext.Provider
       value={{
+        itemQuantity,
         setItemQuantity,
         setSize,
         cart,
         setCart,
         addProductToCart,
         quantity,
-        setItemQuantity,
         handleRemoveItem,
         loading,
         setLoading,
+        // handleUpdateItemQty,
       }}
     >
       {children}
