@@ -1,5 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
 import { createStandaloneToast } from "@chakra-ui/react";
+import { executeSync } from "graphql";
 
 export const CartContext = createContext();
 
@@ -10,6 +11,7 @@ export const CartWrapper = ({ children }) => {
   const [size, setSize] = useState(null);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(NaN);
   const toast = createStandaloneToast();
 
   useEffect(() => {
@@ -23,15 +25,15 @@ export const CartWrapper = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // Add product to the cart
+  // Add product to the cart from the product page
   const addProductToCart = (product) => {
-    console.log(cart);
-    // Finds the cart item object that equals the product added
+    // If there's an item in the cart with the same id, return that item
     const exists = cart.find((x) => x._id === product._id);
 
     setLoading(true);
     // If the existing item in the cart matches the item that the user adds, update the quantity instead of completely adding the same item
     if (exists) {
+      console.log("Updating the item quantity that is already in the cart.");
       setCart(
         cart.map((x) =>
           x._id === product._id
@@ -39,13 +41,27 @@ export const CartWrapper = ({ children }) => {
                 ...exists,
                 quantity: exists.quantity + itemQuantity,
                 size: size,
+                // price: exists.price * itemQuantity,
+                price: exists.price,
+                totalPrice: exists.price * itemQuantity,
               }
             : x
         )
       );
       // If the item the user adds doesn't exist in the cart, add the new item
     } else {
-      setCart([...cart, { ...product, quantity: itemQuantity, size: size }]);
+      console.log("Added a new item that isn't in the cart yet.....");
+      setCart([
+        ...cart,
+        {
+          ...product,
+          quantity: itemQuantity,
+          size: size,
+          // price: product.price * itemQuantity,
+          price: product.price,
+          totalPrice: product.price * itemQuantity,
+        },
+      ]);
     }
     // User needs to select a size/style before adding the item to the cart. If they don't, display an error message
     if (size === null) {
@@ -72,16 +88,54 @@ export const CartWrapper = ({ children }) => {
         });
         // Hide the spinner icon after the user added the item to the cart
         setLoading(false);
+        // After the product is added to the cart, get the size to null so the user can't add an item to the cart until a size is selected
+        setSize(null);
+        // After the item is added to the cart, set the itemQuantity state to 1
+        setItemQuantity(quantity[0]);
       }, 500);
     }
-
-    // After the product is added to the cart, get the size to null so the user can't add an item to the cart until a size is selected
-    setSize(null);
-    // After the item is added to the cart, set the itemQuantity state to 1
-    setItemQuantity(quantity[0]);
   };
 
-  // Remove item from the cart
+  // If the user clicks the increment or decrement arrows in the cart for a specific product, update the item quantity
+  const handleItemQuantity = (product, direction) => {
+    const exists = cart.find((x) => x._id === product._id);
+
+    if (direction === "decrement") {
+      if (exists.quantity === 1) {
+        setCart(cart.filter((x) => x._id !== product._id));
+      } else {
+        setCart(
+          cart.map((x) =>
+            x._id === product._id
+              ? {
+                  ...exists,
+                  quantity: exists.quantity - 1,
+                  totalPrice: (exists.quantity - 1) * exists.price,
+                }
+              : x
+          )
+        );
+      }
+    } else {
+      // if the item exists in the cart already, increase the quantity by 1 and update the price
+      if (exists) {
+        setCart(
+          cart.map((x) =>
+            x._id === product._id
+              ? {
+                  ...exists,
+                  quantity: exists.quantity + 1,
+                  totalPrice: (exists.quantity + 1) * exists.price,
+                }
+              : x
+          )
+        );
+      }
+    }
+  };
+
+
+  // If the user clicks the remove item on the product, remove the whole item.
   const handleRemoveItem = (selectedItem) => {
     setCart(cart.filter((product) => product._id !== selectedItem));
   };
@@ -99,7 +153,8 @@ export const CartWrapper = ({ children }) => {
         handleRemoveItem,
         loading,
         setLoading,
-        // handleUpdateItemQty,
+        handleItemQuantity,
+        totalPrice,
       }}
     >
       {children}

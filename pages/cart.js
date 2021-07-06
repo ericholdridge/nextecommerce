@@ -10,7 +10,8 @@ import client from "../utils/graphClient";
 import { calculateCartTotal } from "../utils/calculateCartTotal";
 
 const Cart = ({ categories }) => {
-  const { cart, handleRemoveItem } = useContext(CartContext);
+  const { cart, handleRemoveItem, addProductToCart, handleItemQuantity, totalPrice } =
+    useContext(CartContext);
 
   return (
     <Layout categories={categories}>
@@ -63,12 +64,23 @@ const Cart = ({ categories }) => {
                 justifyContent="space-between"
               >
                 <Flex flexDirection="column" alignItems="center">
-                  <ChevronUpIcon w={6} h={6} cursor="pointer" />
+                  <ChevronUpIcon
+                    w={6}
+                    h={6}
+                    cursor="pointer"
+                    onClick={() => handleItemQuantity(item, "increment")}
+                  />
                   <Text fontWeight="medium">{item.quantity}</Text>
-                  <ChevronDownIcon w={6} h={6} cursor="pointer" />
+                  <ChevronDownIcon
+                    w={6}
+                    h={6}
+                    cursor="pointer"
+                    onClick={() => handleItemQuantity(item, "decrement")}
+                  />
                 </Flex>
                 <Text fontWeight="medium">
-                  {item ? "$" + parseInt(item.price).toFixed(2) : null}
+                  {item ? "$" + item.totalPrice.toFixed(2) : null}
+                  {/* {totalPrice} */}
                 </Text>
               </Flex>
             </Flex>

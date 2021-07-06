@@ -8,7 +8,6 @@ import {
   Flex,
   Heading,
   Spinner,
-  createStandaloneToast,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../Context/CartContext";
@@ -17,16 +16,12 @@ import { CardElement } from "@stripe/react-stripe-js";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
-import { useRouter } from "next/router";
 import { calculateCartTotal } from "../../utils/calculateCartTotal";
 
 const CheckoutForm = () => {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const toast = createStandaloneToast();
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const [clientSecret, setClientSecret] = useState(null);
-  const [result, setResult] = useState(null);
   const {
     register,
     getValues,
@@ -40,17 +35,17 @@ const CheckoutForm = () => {
   // The intent tells Stripe how much to charge. This is why it's important to
   // calculate this on the server side so the user doesn't change the price on the client side.
   useEffect(() => {
-    // Send all items in the cart to the intent API to get a intent.
-    fetch("/api/intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cart: cart }),
-    })
-      .then((resp) => resp.json())
-      .then((data) => setClientSecret(data.clientSecret)) // set the intent into state
-      .catch((error) => console.log(error));
+      // Send all items in the cart to the intent API to get a intent.
+      window.fetch("/api/intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cart: cart }),
+      })
+        .then((resp) => resp.json())
+        .then((data) => setClientSecret(data.clientSecret)) // set the intent into state
+        .catch((error) => console.log(error));
   }, [isValid]);
 
   const handleSubmit = async (event) => {
@@ -84,24 +79,6 @@ const CheckoutForm = () => {
         },
       },
     });
-    setResult(result);
-
-    // If the form values are not set by the user,
-    if (result?.error?.type) {
-      setLoading(false);
-      toast({
-        title: "Error",
-        position: "top",
-        description: "Form values are required",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-      // The paymentIntent has succeeded so we send the user to the success page
-    } else {
-      setLoading(false);
-      router.push("/success");
-    }
   };
 
   const iframeStyles = {
@@ -369,11 +346,6 @@ const CheckoutForm = () => {
             >
               <CardElement options={cardElementOpts} />
             </Box>
-            {result?.error ? (
-              <Text color="red.500" mt="1">
-                {result?.error?.message}
-              </Text>
-            ) : null}
             {loading ? (
               <Button type="submit" disabled={!stripe} mt="4">
                 <Spinner
@@ -421,7 +393,7 @@ const CheckoutForm = () => {
               <Flex mt="4">
                 <Box position="relative">
                   <Image
-                    src={item.image}
+                    src={item.image.asset.url}
                     alt={item.name}
                     width={90}
                     height={90}
@@ -445,7 +417,7 @@ const CheckoutForm = () => {
                 </Flex>
               </Flex>
               <Text fontSize="sm" color="#888">
-                {item ? "$" + parseInt(item.price).toFixed(2) : null}
+                {item ? "$" + item.totalPrice.toFixed(2) : null}
               </Text>
             </Flex>
           ))}

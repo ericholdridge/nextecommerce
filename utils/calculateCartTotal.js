@@ -1,7 +1,7 @@
 export const calculateCartTotal = (cart) => {
-  const itemPrices = cart?.map((item) => item.price);
+  const itemPrices = cart?.map((item) => item.totalPrice);
   const subtotal = itemPrices?.reduce(function (accumulator, currentValue) {
     return accumulator + currentValue;
   }, 0);
-  return "$" + parseInt(subtotal).toFixed(2);
+  return "$" + subtotal.toFixed(2);
 };

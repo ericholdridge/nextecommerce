@@ -6,6 +6,7 @@ export default async (req, res) => {
   try {
     // Get the array of items in the cart we sent here via the fetch request
     const { cart } = req.body;
+    console.log(cart);
 
     // Just check the request is a POST request (instead of GET/PUT etc)
     if (req.method !== "POST") {
@@ -13,12 +14,12 @@ export default async (req, res) => {
     }
 
     // Check a cart has been sent over, and that there are items in the cart
-    if (!cart || cart.length === 0) {
+    if (!cart || cart.length < 0) {
       res.status(400).send("Cart cannot be empty");
     }
 
     // Assuming the request came through fine.... create an array of slugs
-    const slugs = cart.map((product) => product.slug);
+    const slugs = cart.map((product) => product.slug.current);
 
     // Get price for all items in the cart through GQL
     const response = await client.query({
@@ -26,7 +27,7 @@ export default async (req, res) => {
       variables: {
         slugs,
       },
-    });
+    })
 
     // Loop through all cart items and add up their values to get final cart value in CENTS
     const calculateOrderAmount = (items) => {
@@ -61,10 +62,9 @@ export default async (req, res) => {
     res.json({
       clientSecret: paymentIntent.client_secret,
     });
-    console.log(paymentIntent);
   } catch (error) {
     // Something messed up
-    console.error(error, error.message);
+    console.error("Fuck these errors: ", error, error.message);
     res.status(500).send("Internal server error - intent");
   }
 };
