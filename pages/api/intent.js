@@ -6,7 +6,7 @@ export default async (req, res) => {
   try {
     // Get the array of items in the cart we sent here via the fetch request
     const { cart } = req.body;
-    console.log(cart);
+    // console.log(cart);
 
     // Just check the request is a POST request (instead of GET/PUT etc)
     if (req.method !== "POST") {
@@ -19,22 +19,22 @@ export default async (req, res) => {
     }
 
     // Assuming the request came through fine.... create an array of slugs
-    const slugs = cart.map((product) => product.slug.current);
+    // const slugs = cart.map((product) => product.slug.current);
 
     // Get price for all items in the cart through GQL
-    const response = await client.query({
-      query: getPricesFromMultipleSlugs,
-      variables: {
-        slugs,
-      },
-    })
+    // const response = await client.query({
+    //   query: getPricesFromMultipleSlugs,
+    //   variables: {
+    //     slugs,
+    //   },
+    // })
 
     // Loop through all cart items and add up their values to get final cart value in CENTS
     const calculateOrderAmount = (items) => {
       if (items.length) {
         let total = 0;
         items.forEach((product) => {
-          total = total + product.price;
+          total = total + product.totalPrice;
         });
 
         return total * 100;
@@ -44,7 +44,8 @@ export default async (req, res) => {
     };
 
     // Get carts total price in cents
-    const totalPrice = calculateOrderAmount(response?.data?.allProducts);
+    // const totalPrice = calculateOrderAmount(response?.data?.allProducts);
+    const totalPrice = calculateOrderAmount(cart);
 
     // If the total price is equal to false, something went wrong inside calculateOrderAmount - likely bad response from GQL
     if (totalPrice === false) {

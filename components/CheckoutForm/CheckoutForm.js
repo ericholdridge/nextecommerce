@@ -17,8 +17,10 @@ import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import { calculateCartTotal } from "../../utils/calculateCartTotal";
+import { useRouter } from "next/router";
 
 const CheckoutForm = () => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { cart, setCart } = useContext(CartContext);
   const [clientSecret, setClientSecret] = useState(null);
@@ -35,26 +37,28 @@ const CheckoutForm = () => {
   // The intent tells Stripe how much to charge. This is why it's important to
   // calculate this on the server side so the user doesn't change the price on the client side.
   useEffect(() => {
-      // Send all items in the cart to the intent API to get a intent.
-      window.fetch("/api/intent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cart: cart }),
-      })
-        .then((resp) => resp.json())
-        .then((data) => setClientSecret(data.clientSecret)) // set the intent into state
-        .catch((error) => console.log(error));
+    // Send all items in the cart to the intent API to get a intent.
+    fetch("/api/intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart: cart }),
+    })
+      .then((resp) => resp.json())
+      .then((data) => setClientSecret(data.clientSecret)) // set the intent into state
+      .catch((error) => console.log(error));
   }, [isValid]);
 
-  const handleSubmit = async (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     const values = getValues();
     trigger(); // triggers validation to run on the form
+    console.log(errors);
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || errors.type) {
+      setLoading(false);
       return;
     }
     const cardElement = elements.getElement(CardElement);
@@ -79,6 +83,14 @@ const CheckoutForm = () => {
         },
       },
     });
+    // checks if the credit card field is filled out and valid. If not, it prevents the form from submitting.
+    if (result.error) {
+      setLoading(false);
+      return;
+    } else if (result.paymentIntent.status === "succeeded") {
+      router.push("/success");
+      setCart([]);
+    }
   };
 
   const iframeStyles = {
@@ -335,7 +347,7 @@ const CheckoutForm = () => {
             mt="4"
           />
         ) : (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleFormSubmit}>
             <Box
               py="3"
               background="#f5f5f5"

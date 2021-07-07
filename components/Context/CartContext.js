@@ -11,7 +11,6 @@ export const CartWrapper = ({ children }) => {
   const [size, setSize] = useState(null);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(NaN);
   const toast = createStandaloneToast();
 
   useEffect(() => {
@@ -41,9 +40,7 @@ export const CartWrapper = ({ children }) => {
                 ...exists,
                 quantity: exists.quantity + itemQuantity,
                 size: size,
-                // price: exists.price * itemQuantity,
-                price: exists.price,
-                totalPrice: exists.price * itemQuantity,
+                totalPrice: exists.price * (exists.quantity + itemQuantity)
               }
             : x
         )
@@ -154,7 +151,6 @@ export const CartWrapper = ({ children }) => {
         loading,
         setLoading,
         handleItemQuantity,
-        totalPrice,
       }}
     >
       {children}

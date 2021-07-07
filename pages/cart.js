@@ -10,7 +10,7 @@ import client from "../utils/graphClient";
 import { calculateCartTotal } from "../utils/calculateCartTotal";
 
 const Cart = ({ categories }) => {
-  const { cart, handleRemoveItem, addProductToCart, handleItemQuantity, totalPrice } =
+  const { cart, handleRemoveItem, handleItemQuantity } =
     useContext(CartContext);
 
   return (
@@ -80,7 +80,6 @@ const Cart = ({ categories }) => {
                 </Flex>
                 <Text fontWeight="medium">
                   {item ? "$" + item.totalPrice.toFixed(2) : null}
-                  {/* {totalPrice} */}
                 </Text>
               </Flex>
             </Flex>
