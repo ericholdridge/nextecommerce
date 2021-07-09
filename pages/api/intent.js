@@ -6,7 +6,6 @@ export default async (req, res) => {
   try {
     // Get the array of items in the cart we sent here via the fetch request
     const { cart } = req.body;
-    // console.log(cart);
 
     // Just check the request is a POST request (instead of GET/PUT etc)
     if (req.method !== "POST") {
@@ -34,7 +33,8 @@ export default async (req, res) => {
       if (items.length) {
         let total = 0;
         items.forEach((product) => {
-          total = total + product.totalPrice;
+          const item = product.totalPrice;
+          total = total + item;
         });
 
         return total * 100;
@@ -55,7 +55,7 @@ export default async (req, res) => {
 
     // Now we have the total cart value, create a stripe intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalPrice,
+      amount: totalPrice.toFixed(),
       currency: "usd",
     });
 
@@ -65,7 +65,7 @@ export default async (req, res) => {
     });
   } catch (error) {
     // Something messed up
-    console.error("Fuck these errors: ", error, error.message);
+    console.error(error, error.message);
     res.status(500).send("Internal server error - intent");
   }
 };

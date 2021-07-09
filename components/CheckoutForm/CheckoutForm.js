@@ -22,12 +22,11 @@ import { useRouter } from "next/router";
 const CheckoutForm = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { cart, setCart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   const [clientSecret, setClientSecret] = useState(null);
   const {
     register,
-    getValues,
-    trigger,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm();
   const stripe = useStripe();
@@ -50,17 +49,14 @@ const CheckoutForm = () => {
       .catch((error) => console.log(error));
   }, [isValid]);
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
+  // When the user clicks the "pay button"
+  const handleFormSubmit = async (data) => {
     setLoading(true);
-    const values = getValues();
-    trigger(); // triggers validation to run on the form
-    console.log(errors);
-
-    if (!stripe || !elements || errors.type) {
+    if (!stripe || !elements) {
       setLoading(false);
       return;
     }
+
     const cardElement = elements.getElement(CardElement);
     await stripe.createPaymentMethod({
       type: "card",
@@ -72,24 +68,24 @@ const CheckoutForm = () => {
         card: elements.getElement(CardElement),
         billing_details: {
           address: {
-            city: values.city,
+            city: data.city,
             country: "US",
-            line1: values.address,
-            postal_code: values.zipCode,
-            state: values.state,
+            line1: data.address,
+            postal_code: data.zipCode,
+            state: data.state,
           },
-          email: values.email,
-          name: values.fullName,
+          email: data.email,
+          name: data.fullName,
         },
       },
     });
-    // checks if the credit card field is filled out and valid. If not, it prevents the form from submitting.
-    if (result.error) {
+
+    // If the payment status succeeded, take the user to the success page. If not, it prevents the form from submitting.
+    if (result.paymentIntent.status === "succeeded") {
+      router.push("/success");
+    } else {
       setLoading(false);
       return;
-    } else if (result.paymentIntent.status === "succeeded") {
-      router.push("/success");
-      setCart([]);
     }
   };
 
@@ -347,7 +343,7 @@ const CheckoutForm = () => {
             mt="4"
           />
         ) : (
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
             <Box
               py="3"
               background="#f5f5f5"

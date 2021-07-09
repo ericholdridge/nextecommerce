@@ -32,7 +32,6 @@ export const CartWrapper = ({ children }) => {
     setLoading(true);
     // If the existing item in the cart matches the item that the user adds, update the quantity instead of completely adding the same item
     if (exists) {
-      console.log("Updating the item quantity that is already in the cart.");
       setCart(
         cart.map((x) =>
           x._id === product._id
@@ -40,21 +39,19 @@ export const CartWrapper = ({ children }) => {
                 ...exists,
                 quantity: exists.quantity + itemQuantity,
                 size: size,
-                totalPrice: exists.price * (exists.quantity + itemQuantity)
+                totalPrice: exists.price * (exists.quantity + itemQuantity),
               }
             : x
         )
       );
       // If the item the user adds doesn't exist in the cart, add the new item
     } else {
-      console.log("Added a new item that isn't in the cart yet.....");
       setCart([
         ...cart,
         {
           ...product,
           quantity: itemQuantity,
           size: size,
-          // price: product.price * itemQuantity,
           price: product.price,
           totalPrice: product.price * itemQuantity,
         },
@@ -130,7 +127,6 @@ export const CartWrapper = ({ children }) => {
       }
     }
   };
-
 
   // If the user clicks the remove item on the product, remove the whole item.
   const handleRemoveItem = (selectedItem) => {

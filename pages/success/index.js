@@ -9,7 +9,9 @@ const SuccessPage = ({ categories }) => {
   const { setCart } = useContext(CartContext);
 
   useEffect(() => {
+    // Empty the cart once the user hits this page.
     localStorage.removeItem("cart");
+    setCart([]);
   }, []);
 
   return (
@@ -17,7 +19,6 @@ const SuccessPage = ({ categories }) => {
       <Heading as="h2" color="#6B46C1" pt="20" pb="10" size="3xl">
         Success! Thank you.
       </Heading>
-      <Box mt="4">Please take note of your order reference:</Box>
     </Layout>
   );
 };
