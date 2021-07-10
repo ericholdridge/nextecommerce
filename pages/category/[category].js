@@ -19,7 +19,7 @@ const Category = ({ products, categories, categoryName }) => {
       >
         {categoryName}
       </Text>
-      <SimpleGrid columns={3} spacing={14} pt="5" pb="10">
+      <SimpleGrid columns={{sm: 1, md: 2, lg: 3}} spacing={14} pt="5" pb="10">
         {products.map((product, index) => (
           <Product key={index} product={product} />
         ))}

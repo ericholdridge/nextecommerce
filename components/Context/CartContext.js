@@ -40,6 +40,8 @@ export const CartWrapper = ({ children }) => {
                 quantity: exists.quantity + itemQuantity,
                 size: size,
                 totalPrice: exists.price * (exists.quantity + itemQuantity),
+                totalWeight:
+                  (exists.quantity + itemQuantity) * exists.productWeight,
               }
             : x
         )
@@ -54,6 +56,7 @@ export const CartWrapper = ({ children }) => {
           size: size,
           price: product.price,
           totalPrice: product.price * itemQuantity,
+          totalWeight: product.productWeight,
         },
       ]);
     }
@@ -105,6 +108,8 @@ export const CartWrapper = ({ children }) => {
                   ...exists,
                   quantity: exists.quantity - 1,
                   totalPrice: (exists.quantity - 1) * exists.price,
+                  totalWeight:
+                    (exists.quantity - itemQuantity) * exists.productWeight,
                 }
               : x
           )
@@ -120,6 +125,8 @@ export const CartWrapper = ({ children }) => {
                   ...exists,
                   quantity: exists.quantity + 1,
                   totalPrice: (exists.quantity + 1) * exists.price,
+                  totalWeight:
+                    (exists.quantity + itemQuantity) * exists.productWeight,
                 }
               : x
           )

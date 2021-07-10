@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -9,14 +10,17 @@ import {
   Heading,
   Spinner,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 import Image from "next/image";
 import { CardElement } from "@stripe/react-stripe-js";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
-import { calculateCartTotal } from "../../utils/calculateCartTotal";
+import {
+  calculateCartTotal,
+  calculateSubtotal,
+  calculateShippingTotal,
+} from "../../utils/calculateCartFees";
 import { useRouter } from "next/router";
 
 const CheckoutForm = () => {
@@ -81,7 +85,7 @@ const CheckoutForm = () => {
     });
 
     // If the payment status succeeded, take the user to the success page. If not, it prevents the form from submitting.
-    if (result.paymentIntent.status === "succeeded") {
+    if (result.paymentIntent?.status === "succeeded") {
       router.push("/success");
     } else {
       setLoading(false);
@@ -264,7 +268,7 @@ const CheckoutForm = () => {
               })}
             >
               <option value="US">United States</option>
-              <option value="Germany">Germany</option>
+              <option value="Germany">Canada</option>
             </Select>
             {errors.country && (
               <Text mt="1" color="red.500">
@@ -330,6 +334,7 @@ const CheckoutForm = () => {
             >
               4242 4242 4242 4242
             </Text>
+            {" "}as the card number.
           </Text>
         </Box>
         {/* Until there is an intent, we show a spinner... you can change this to look like w/e you like */}
@@ -434,21 +439,19 @@ const CheckoutForm = () => {
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="sm">Subtotal</Text>
               <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-                {calculateCartTotal(cart)}
+                {calculateSubtotal(cart)}
               </Flex>
             </Flex>
             {/* Tax */}
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="sm">Tax</Text>
-              <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-                {calculateCartTotal(cart)}
-              </Flex>
+              <Flex fontSize="lg" color="#6B46C1" fontWeight="bold"></Flex>
             </Flex>
             {/* Shipping */}
             <Flex alignItems="center" justifyContent="space-between">
               <Text fontSize="sm">Shipping</Text>
               <Flex fontSize="lg" color="#6B46C1" fontWeight="bold">
-                {calculateCartTotal(cart)}
+                {calculateShippingTotal(cart)}
               </Flex>
             </Flex>
           </Box>

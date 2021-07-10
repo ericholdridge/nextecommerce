@@ -1,65 +1,87 @@
 import { Box, Flex, Link } from "@chakra-ui/react";
-import { Icon, Search2Icon } from "@chakra-ui/icons";
+import { Icon, Search2Icon, HamburgerIcon } from "@chakra-ui/icons";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import NextLink from "next/link";
 import SwitchMode from "../Theme";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 
 const Navbar = ({ categories }) => {
   const { cart } = useContext(CartContext);
+  const [show, setShow] = useState(true);
   return (
-    <Flex as="nav" alignItems="center" justify="space-between" py="6">
-      <Flex alignItems="center">
-        <NextLink href="/" passHref>
-          <Link
-            py="1.5"
-            px="3"
-            mr="4"
-            color="#888"
-            _hover={{
-              textDecoration: "none",
-              background: "#f5f5f5",
-              color: "#101b42",
-              borderRadius: "40px",
-            }}
-            _focus={{
-              boxShadow: "none",
-            }}
-          >
-            Logo
-          </Link>
-        </NextLink>
-        {categories?.map((item, index) => (
-          <NextLink
-            key={index}
-            href={`/category/${item?.slug?.current}`}
-            passHref
-          >
+    <Flex
+      as="nav"
+      alignItems={{ sm: "flex-start", md: "center" }}
+      justify="space-between"
+      py="6"
+      border="1px solid red"
+      direction={{ sm: "column", md: "row" }}
+    >
+      <HamburgerIcon
+        onClick={() => setShow(!show)}
+        w={5}
+        h={5}
+        ml={{ sm: "2" }}
+        cursor="pointer"
+        display={{ sm: "block", md: "none" }}
+      />
+      <Flex
+        alignItems={{ sm: null, md: "center" }}
+        display={{ sm: show ? "block" : "none", md: "block"}}
+      >
+        <Flex flexDir={{ sm: "column", md: "row" }}>
+          <NextLink href="/" passHref>
             <Link
               py="1.5"
-              px="3"
-              mr="4"
+              px={{ sm: "2", md: "3" }}
+              mr={{ sm: null, md: "4" }}
+              width={{ sm: "max-content" }}
               color="#888"
               _hover={{
                 textDecoration: "none",
                 background: "#f5f5f5",
                 color: "#101b42",
                 borderRadius: "40px",
-                color: "#000",
               }}
               _focus={{
                 boxShadow: "none",
               }}
             >
-              {item.name}
+              Logo
             </Link>
           </NextLink>
-        ))}
+          {categories?.map((item, index) => (
+            <NextLink
+              key={index}
+              href={`/category/${item?.slug?.current}`}
+              passHref
+            >
+              <Link
+                py="1.5"
+                px={{ sm: "2", md: "3" }}
+                mr={{ sm: null, md: "4" }}
+                width={{ sm: "max-content" }}
+                color="#888"
+                _hover={{
+                  textDecoration: "none",
+                  background: "#f5f5f5",
+                  color: "#101b42",
+                  borderRadius: "40px",
+                }}
+                _focus={{
+                  boxShadow: "none",
+                }}
+              >
+                {item.name}
+              </Link>
+            </NextLink>
+          ))}
+        </Flex>
       </Flex>
       <Flex alignItems="center">
         <SwitchMode />
-        <Search2Icon w={5} h={5} mx="4" />
+        {/* <Search2Icon w={5} h={5} mx="4" /> */}
         <NextLink href="/cart" passHref>
           <Link>
             <Box position="relative">

@@ -7,7 +7,7 @@ import { CartContext } from "../components/Context/CartContext";
 import NextLink from "next/link";
 import { allCategories } from "../queries/allCategories";
 import client from "../utils/graphClient";
-import { calculateCartTotal } from "../utils/calculateCartTotal";
+import { calculateSubtotal } from "../utils/calculateCartFees";
 
 const Cart = ({ categories }) => {
   const { cart, handleRemoveItem, handleItemQuantity } =
@@ -99,7 +99,7 @@ const Cart = ({ categories }) => {
               fontWeight="bold"
               fontSize="2xl"
             >
-              {calculateCartTotal(cart)}
+              {calculateSubtotal(cart)}
             </Box>
             <NextLink href="/checkout" passhref>
               <Link

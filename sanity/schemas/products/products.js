@@ -55,5 +55,12 @@ export default {
       title: "Product Size & Quantity",
       type: "productSizeQuantity",
     },
+    {
+      name: "productWeight",
+      title: "Product Weight",
+      type: "number",
+      description: "Product weight needed to calculate shipping.",
+      validation: (Rule) => Rule.required(),
+    },
   ],
 };

@@ -7,6 +7,7 @@ export const findBySlug = gql`
       description
       name
       price
+      productWeight
       slug {
         current
       }
