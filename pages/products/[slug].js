@@ -25,29 +25,57 @@ const ViewProduct = ({ products, categories }) => {
   return (
     <Layout categories={categories} cart={cart}>
       {products.map((product, index) => (
-        <Flex key={index} justify="space-between" w="100%" mt="14">
+        <Flex
+          key={index}
+          justify="space-between"
+          width="100%"
+          mt="14"
+          flexDir={{ sm: "column", md: "row" }}
+          padding={{ sm: "0 0 30px 0" }}
+        >
           <Box
             bg="#f5f5f5"
             borderRadius="4"
             p="6"
-            maxWidth="600px"
+            alignItems="flex-start"
             boxShadow="md"
+            width={{ md: "48%" }}
           >
-            <Image
-              src={product?.image?.asset?.url}
-              alt="Picture of the author"
-              width={600}
-              height={600}
-            />
+            <Flex justifyContent="center" alignItems="center">
+              <Image
+                src={product?.image?.asset?.url}
+                alt="Picture of the author"
+                width={600}
+                height={600}
+                layout="intrinsic"
+              />
+            </Flex>
           </Box>
-          <Box maxWidth="600px" minW="600px">
-            <Heading as="h2" color="#6B46C1" py="6" size="3xl">
+          <Box width={{ md: "48%" }}>
+            <Heading
+              as="h2"
+              color="#6B46C1"
+              pt={{sm: "4"}}
+              fontSize={{ sm: "3xl", md: "4xl" }}
+            >
               {product.name}
             </Heading>
-            <Box as="span" fontSize="2xl" fontWeight="bold">
+            <Box
+              as="span"
+              fontSize={{ md: "xl", lg: "2xl" }}
+              fontWeight="bold"
+              py={{ sm: "2", md: "2" }}
+              display="block"
+            >
               {product ? "$" + product.price : null}
             </Box>
-            <Box as="p" color="#888" fontWeight="medium" py="4" lineHeight="2">
+            <Box
+              as="p"
+              color="#888"
+              fontWeight="medium"
+              lineHeight="2"
+              pb={{ sm: "2", md: "4" }}
+            >
               {product.description}
             </Box>
             <Box>
@@ -80,10 +108,11 @@ const ViewProduct = ({ products, categories }) => {
             <Button
               onClick={() => addProductToCart(product)}
               bg="#6B46C1"
-              w="100%"
+              width="100%"
               color="#fff"
               fontWeight="black"
               mt="6"
+              display="block"
               fontSize="14"
               _hover={{ bg: "green.400" }}
             >

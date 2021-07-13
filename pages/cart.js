@@ -32,7 +32,7 @@ const Cart = ({ categories }) => {
               boxShadow="md"
               key={item?.id || i}
             >
-              <Flex alignItems="center">
+              <Flex alignItems="center" maxW={{ sm: "220px" }}>
                 <Image
                   src={item.image.asset.url}
                   alt={item.name}
@@ -41,8 +41,9 @@ const Cart = ({ categories }) => {
                 />
                 <Box ml="6">
                   <Text fontWeight="medium" fontSize="md">
-                    {item.name} - {item?.size}
+                    {item.name}
                   </Text>
+                  <Text fontSize="sm" color="#888" pt="2">Size: {item.size}</Text>
                   <Button
                     onClick={() => handleRemoveItem(item._id)}
                     fontSize="sm"
@@ -59,7 +60,7 @@ const Cart = ({ categories }) => {
                 </Box>
               </Flex>
               <Flex
-                minW="300px"
+                minW="100px"
                 alignItems="center"
                 justifyContent="space-between"
               >

@@ -13,10 +13,9 @@ const Navbar = ({ categories }) => {
     <Flex
       as="nav"
       alignItems={{ sm: "flex-start", md: "center" }}
-      justify="space-between"
+      justify={{sm: "space-between", md: "space-between" }}
       py="6"
-      border="1px solid red"
-      direction={{ sm: "column", md: "row" }}
+      direction={{ sm: show ? "column" : "row", md: "row" }}
     >
       <HamburgerIcon
         onClick={() => setShow(!show)}
@@ -28,7 +27,7 @@ const Navbar = ({ categories }) => {
       />
       <Flex
         alignItems={{ sm: null, md: "center" }}
-        display={{ sm: show ? "block" : "none", md: "block"}}
+        display={{ sm: show ? "block" : "none", md: "block" }}
       >
         <Flex flexDir={{ sm: "column", md: "row" }}>
           <NextLink href="/" passHref>
@@ -79,7 +78,7 @@ const Navbar = ({ categories }) => {
           ))}
         </Flex>
       </Flex>
-      <Flex alignItems="center">
+      <Flex alignItems="center" marginTop={{sm: show ? "2" : "0"}}>
         <SwitchMode />
         {/* <Search2Icon w={5} h={5} mx="4" /> */}
         <NextLink href="/cart" passHref>
@@ -96,7 +95,7 @@ const Navbar = ({ categories }) => {
                   right="-2"
                 ></Box>
               ) : null}
-              <Icon as={AiOutlineShoppingCart} w={6} h={6} />
+              <Icon as={AiOutlineShoppingCart} w={6} h={6} marginLeft={{sm: "3"}}/>
             </Box>
           </Link>
         </NextLink>
