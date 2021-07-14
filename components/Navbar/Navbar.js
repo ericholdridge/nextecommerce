@@ -13,7 +13,7 @@ const Navbar = ({ categories }) => {
     <Flex
       as="nav"
       alignItems={{ sm: "flex-start", md: "center" }}
-      justify={{sm: "space-between", md: "space-between" }}
+      justify={{ sm: "space-between", md: "space-between" }}
       py="6"
       direction={{ sm: show ? "column" : "row", md: "row" }}
     >
@@ -78,11 +78,11 @@ const Navbar = ({ categories }) => {
           ))}
         </Flex>
       </Flex>
-      <Flex alignItems="center" marginTop={{sm: show ? "2" : "0"}}>
+      <Flex alignItems="center" marginTop={{ sm: show ? "2" : "0" }}>
         <SwitchMode />
         {/* <Search2Icon w={5} h={5} mx="4" /> */}
         <NextLink href="/cart" passHref>
-          <Link>
+          <Link _focus={{outline: "transparent"}}>
             <Box position="relative">
               {cart?.length > 0 ? (
                 <Box
@@ -95,7 +95,12 @@ const Navbar = ({ categories }) => {
                   right="-2"
                 ></Box>
               ) : null}
-              <Icon as={AiOutlineShoppingCart} w={6} h={6} marginLeft={{sm: "3"}}/>
+              <Icon
+                as={AiOutlineShoppingCart}
+                w={6}
+                h={6}
+                marginLeft={{ sm: "3" }}
+              />
             </Box>
           </Link>
         </NextLink>

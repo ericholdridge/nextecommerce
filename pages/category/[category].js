@@ -5,7 +5,6 @@ import client from "../../utils/graphClient";
 import { findCategoryIdFromCategorySlug } from "../../queries/findCategoryIdFromCategorySlug";
 import { findProductsFromCategoryId } from "../../queries/findProductsFromCategoryId";
 import { findBySlug } from "../../queries/findBySlug";
-import { Box } from "@chakra-ui/react";
 
 const Category = ({ products, categories, categoryName }) => {
   return (
@@ -19,7 +18,7 @@ const Category = ({ products, categories, categoryName }) => {
       >
         {categoryName}
       </Text>
-      <SimpleGrid columns={{sm: 1, md: 2, lg: 3}} spacing={14} pt="5" pb="10">
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={14} pt="5" pb="10">
         {products.map((product, index) => (
           <Product key={index} product={product} />
         ))}
@@ -49,6 +48,12 @@ export const getServerSideProps = async ({ params }) => {
       slug: `${params.slug}`,
     },
   });
+
+  if (!products) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

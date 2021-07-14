@@ -21,9 +21,6 @@ function RadioCard(props) {
           bg: "#6B46C1",
           color: "white",
         }}
-        _focus={{
-          boxShadow: "outline",
-        }}
         px={5}
         py={3}
       >

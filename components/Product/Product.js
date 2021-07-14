@@ -2,6 +2,8 @@ import NextLink from "next/link";
 import { Flex, Text } from "@chakra-ui/layout";
 import Image from "next/image";
 import { Box } from "@chakra-ui/layout";
+import { useContext } from "react";
+import { CartContext } from "../../components/Context/CartContext";
 
 const Product = ({ product }) => {
   return (
@@ -15,7 +17,13 @@ const Product = ({ product }) => {
         cursor="pointer"
         boxShadow="md"
       >
-        <Image src={product?.image?.asset?.url} width={330} height={330} />
+        <Image
+          src={product?.image?.asset?.url}
+          width={330}
+          height={330}
+          blurDataURL={product?.image?.asset?.url}
+          placeholder="blur"
+        />
         <Box pt="8">
           <Text textAlign="center" fontSize="lg" fontWeight="bold">
             {product.name}

@@ -48,6 +48,8 @@ const ViewProduct = ({ products, categories }) => {
                 width={600}
                 height={600}
                 layout="intrinsic"
+                blurDataURL={product?.image?.asset?.url}
+                placeholder="blur"
               />
             </Flex>
           </Box>
@@ -55,7 +57,7 @@ const ViewProduct = ({ products, categories }) => {
             <Heading
               as="h2"
               color="#6B46C1"
-              pt={{sm: "4"}}
+              pt={{ sm: "4" }}
               fontSize={{ sm: "3xl", md: "4xl" }}
             >
               {product.name}
@@ -115,6 +117,7 @@ const ViewProduct = ({ products, categories }) => {
               display="block"
               fontSize="14"
               _hover={{ bg: "green.400" }}
+              _focus={{ outline: "transparent" }}
             >
               {loading ? (
                 <Spinner

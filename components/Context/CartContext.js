@@ -11,6 +11,7 @@ export const CartWrapper = ({ children }) => {
   const [size, setSize] = useState(null);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [productLoading, setProductLoading] = useState(true);
   const toast = createStandaloneToast();
 
   useEffect(() => {
@@ -154,6 +155,8 @@ export const CartWrapper = ({ children }) => {
         loading,
         setLoading,
         handleItemQuantity,
+        productLoading,
+        setProductLoading,
       }}
     >
       {children}

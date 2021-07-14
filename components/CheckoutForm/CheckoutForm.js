@@ -119,6 +119,7 @@ const CheckoutForm = () => {
 
   return (
     <Flex
+      flexDir={{ sm: "column-reverse", lg: "row" }}
       justifyContent="space-between"
       alignItems="flex-start"
       mt="14"
@@ -126,15 +127,17 @@ const CheckoutForm = () => {
     >
       {/* Shipping Information */}
       <Box
-        border="2px solid #e2e8f0"
+        border="1px solid #e2e8f0"
         borderRadius="8"
         py="8"
         px="6"
-        minW="750px"
-        maxWidth="750px"
+        // minW="750px"
+        // maxWidth="750px"
         position="sticky"
         top="0"
-        boxShadow="md"
+        mt={{ sm: "4", md: "4", lg: "0" }}
+        boxShadow="sm"
+        width={{ sm: "100%", lg: "54%", xl: "58%" }}
       >
         <Heading as="h3" pb="8">
           Shipping
@@ -333,8 +336,8 @@ const CheckoutForm = () => {
               borderRadius="4"
             >
               4242 4242 4242 4242
-            </Text>
-            {" "}as the card number.
+            </Text>{" "}
+            as the card number.
           </Text>
         </Box>
         {/* Until there is an intent, we show a spinner... you can change this to look like w/e you like */}
@@ -377,6 +380,7 @@ const CheckoutForm = () => {
                 boxShadow="sm"
                 border="2px solid #e2e8f0"
                 bg="green.400"
+                _focus={{ outline: "transparent" }}
               >
                 Pay
               </Button>
@@ -387,17 +391,17 @@ const CheckoutForm = () => {
       {/* Cart items */}
       {cart.length > 0 && (
         <Box
-          border="2px solid #e2e8f0"
+          border="1px solid #e2e8f0"
           borderRadius="8"
           py="5"
           px="6"
-          minWidth="450px"
-          maxWidth="450px"
-          boxShadow="md"
+          width={{ sm: "100%", lg: "45%", xl: "40%" }}
+          // maxWidth={{sm: null, md: null, xl: "40%"}}
+          boxShadow="sm"
         >
           {cart.map((item, i) => (
             <Flex
-              minW="400px"
+              // minW="400px"
               justifyContent="space-between"
               alignItems="center"
               mt="2"
@@ -410,6 +414,8 @@ const CheckoutForm = () => {
                     alt={item.name}
                     width={90}
                     height={90}
+                    blurDataURL={item.image.asset.url}
+                    placeholder="blur"
                   />
                   <Text
                     position="absolute"

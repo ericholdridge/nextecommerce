@@ -38,6 +38,8 @@ const Cart = ({ categories }) => {
                   alt={item.name}
                   width={75}
                   height={75}
+                  blurDataURL={item.image.asset.url}
+                  placeholder="blur"
                 />
                 <Box ml="6">
                   <Text fontWeight="medium" fontSize="md">
