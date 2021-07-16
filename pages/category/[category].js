@@ -4,6 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import client from "../../utils/graphClient";
 import { findCategoryIdFromCategorySlug } from "../../queries/findCategoryIdFromCategorySlug";
 import { findProductsFromCategoryId } from "../../queries/findProductsFromCategoryId";
+import { allCategories } from "../../queries/allCategories";
 import { findBySlug } from "../../queries/findBySlug";
 
 const Category = ({ products, categories, categoryName }) => {
@@ -27,7 +28,22 @@ const Category = ({ products, categories, categoryName }) => {
   );
 };
 
-export const getServerSideProps = async ({ params }) => {
+export const getStaticPaths = async () => {
+  const categoryName = await client.query({
+    query: allCategories,
+  });
+
+  const paths = categoryName.data.allCategory.map((category) => ({
+    params: { category: category.slug.current },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async ({ params }) => {
   const categoryId = await client.query({
     query: findCategoryIdFromCategorySlug,
     variables: {
@@ -45,7 +61,7 @@ export const getServerSideProps = async ({ params }) => {
   const getCategories = await client.query({
     query: findBySlug,
     variables: {
-      slug: `${params.slug}`,
+      slug: `${params.category}`,
     },
   });
 

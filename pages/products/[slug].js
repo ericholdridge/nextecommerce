@@ -11,6 +11,7 @@ import { SimpleGrid } from "@chakra-ui/layout";
 import Radio from "../../components/Radio/Radio";
 import { CartContext } from "../../components/Context/CartContext";
 import { Spinner } from "@chakra-ui/react";
+import { allProducts } from "../../queries/allProducts";
 
 const ViewProduct = ({ products, categories }) => {
   const {
@@ -138,7 +139,22 @@ const ViewProduct = ({ products, categories }) => {
   );
 };
 
-export const getServerSideProps = async ({ params }) => {
+export const getStaticPaths = async () => {
+  const productSlug = await client.query({
+    query: allProducts,
+  });
+
+  const paths = productSlug.data.allProducts.map((slug) => ({
+    params: { slug: slug.slug.current },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async ({ params }) => {
   const response = await client.query({
     query: findBySlug,
     variables: {
