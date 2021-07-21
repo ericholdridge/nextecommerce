@@ -24,7 +24,7 @@ const Product = ({ product }) => {
           blurDataURL={product?.image?.asset?.url}
           placeholder="blur"
         />
-        <Box pt="8">
+        <Box pt={{ xs: "2", sm: "4", md: "8" }}>
           <Text textAlign="center" fontSize="lg" fontWeight="bold">
             {product.name}
           </Text>

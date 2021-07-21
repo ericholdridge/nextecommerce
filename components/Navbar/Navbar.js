@@ -12,24 +12,24 @@ const Navbar = ({ categories }) => {
   return (
     <Flex
       as="nav"
-      alignItems={{ sm: "flex-start", md: "center" }}
-      justify={{ sm: "space-between", md: "space-between" }}
+      alignItems={{ xs: "flex-start", md: "center" }}
+      justify={{ xs: "space-between", md: "space-between" }}
       py="6"
-      direction={{ sm: show ? "column" : "row", md: "row" }}
+      direction={{ xs: show ? "column" : "row", md: "row" }}
     >
       <HamburgerIcon
         onClick={() => setShow(!show)}
         w={5}
         h={5}
-        ml={{ sm: "2" }}
+        ml={{ xs: "0", sm: "2" }}
         cursor="pointer"
-        display={{ sm: "block", md: "none" }}
+        display={{ xs: "block", md: "none" }}
       />
       <Flex
-        alignItems={{ sm: null, md: "center" }}
-        display={{ sm: show ? "block" : "none", md: "block" }}
+        alignItems={{ xs: null, md: "center" }}
+        display={{ xs: show ? "block" : "none", md: "block" }}
       >
-        <Flex flexDir={{ sm: "column", md: "row" }}>
+        <Flex flexDir={{ xs: "column", md: "row" }}>
           <NextLink href="/" passHref>
             <Link
               py="1.5"
@@ -82,7 +82,7 @@ const Navbar = ({ categories }) => {
         <SwitchMode />
         {/* <Search2Icon w={5} h={5} mx="4" /> */}
         <NextLink href="/cart" passHref>
-          <Link _focus={{outline: "transparent"}}>
+          <Link _focus={{ outline: "transparent" }}>
             <Box position="relative">
               {cart?.length > 0 ? (
                 <Box

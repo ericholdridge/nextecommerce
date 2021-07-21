@@ -12,7 +12,7 @@ const Category = ({ products, categories, categoryName }) => {
     <Layout categories={categories}>
       <Text
         as="h1"
-        fontSize="6xl"
+        fontSize={{ xs: "3xl", sm: "6xl" }}
         textColor="#6B46C1"
         fontWeight="bold"
         py="10"

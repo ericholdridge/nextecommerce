@@ -14,6 +14,8 @@ const CheckoutPage = ({ categories }) => {
   );
   const { cart, setCart } = useContext(CartContext);
 
+  console.log(stripePromise);
+
   useEffect(() => {
     const data = localStorage.getItem("cart");
     if (data) {

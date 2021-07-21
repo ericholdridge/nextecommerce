@@ -119,7 +119,7 @@ const CheckoutForm = () => {
 
   return (
     <Flex
-      flexDir={{ sm: "column-reverse", lg: "row" }}
+      flexDir={{ xs: "column-reverse", lg: "row" }}
       justifyContent="space-between"
       alignItems="flex-start"
       mt="14"
@@ -135,9 +135,9 @@ const CheckoutForm = () => {
         // maxWidth="750px"
         position="sticky"
         top="0"
-        mt={{ sm: "4", md: "4", lg: "0" }}
+        mt={{ xs: "4", md: "4", lg: "0" }}
         boxShadow="sm"
-        width={{ sm: "100%", lg: "54%", xl: "58%" }}
+        width={{ xs: "100%", lg: "54%", xl: "58%" }}
       >
         <Heading as="h3" pb="8">
           Shipping
@@ -395,7 +395,7 @@ const CheckoutForm = () => {
           borderRadius="8"
           py="5"
           px="6"
-          width={{ sm: "100%", lg: "45%", xl: "40%" }}
+          width={{ xs: "100%", lg: "45%", xl: "40%" }}
           // maxWidth={{sm: null, md: null, xl: "40%"}}
           boxShadow="sm"
         >

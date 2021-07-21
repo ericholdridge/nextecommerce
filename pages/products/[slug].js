@@ -30,8 +30,8 @@ const ViewProduct = ({ products, categories }) => {
           key={index}
           justify="space-between"
           width="100%"
-          mt="14"
-          flexDir={{ sm: "column", md: "row" }}
+          mt={{xs: "6", md: "14"}}
+          flexDir={{ xs: "column", md: "row" }}
           padding={{ sm: "0 0 30px 0" }}
         >
           <Box
@@ -54,12 +54,12 @@ const ViewProduct = ({ products, categories }) => {
               />
             </Flex>
           </Box>
-          <Box width={{ md: "48%" }}>
+          <Box width={{ md: "48%" }} mb={{xs: "6"}}>
             <Heading
               as="h2"
               color="#6B46C1"
-              pt={{ sm: "4" }}
-              fontSize={{ sm: "3xl", md: "4xl" }}
+              pt={{ xs: "4" }}
+              fontSize={{ xs: "3xl", md: "4xl" }}
             >
               {product.name}
             </Heading>
@@ -67,7 +67,7 @@ const ViewProduct = ({ products, categories }) => {
               as="span"
               fontSize={{ md: "xl", lg: "2xl" }}
               fontWeight="bold"
-              py={{ sm: "2", md: "2" }}
+              py={{ xs: "2", md: "2" }}
               display="block"
             >
               {product ? "$" + product.price : null}
@@ -76,8 +76,8 @@ const ViewProduct = ({ products, categories }) => {
               as="p"
               color="#888"
               fontWeight="medium"
-              lineHeight="2"
-              pb={{ sm: "2", md: "4" }}
+              lineHeight={{xs: "1.6", md: "2"}}
+              pb={{ xs: "2", md: "4" }}
             >
               {product.description}
             </Box>

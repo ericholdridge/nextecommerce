@@ -24,28 +24,37 @@ const Cart = ({ categories }) => {
             <Flex
               w="full"
               bg="#f5f5f5"
-              px="10"
-              py="7"
+              px={{ xs: "6" }}
+              py={{ xs: "3.5", sm: "7" }}
               justifyContent="space-between"
               borderRadius="4"
               mt="6"
               boxShadow="md"
               key={item?.id || i}
             >
-              <Flex alignItems="center" maxW={{ sm: "220px" }}>
-                <Image
-                  src={item.image.asset.url}
-                  alt={item.name}
-                  width={75}
-                  height={75}
-                  blurDataURL={item.image.asset.url}
-                  placeholder="blur"
-                />
-                <Box ml="6">
+              <Flex
+                alignItems={{ xs: "flex-start", md: "center" }}
+                flexDirection={{ xs: "column", md: "row" }}
+                // border="1px solid red"
+                maxW={{ sm: "220px" }}
+              >
+                <Box ml={{ xs: "-2", sm: "0" }}>
+                  <Image
+                    src={item.image.asset.url}
+                    alt={item.name}
+                    width={75}
+                    height={75}
+                    blurDataURL={item.image.asset.url}
+                    placeholder="blur"
+                  />
+                </Box>
+                <Box ml={{ xs: "0", sm: "6" }}>
                   <Text fontWeight="medium" fontSize="md">
                     {item.name}
                   </Text>
-                  <Text fontSize="sm" color="#888" pt="2">Size: {item.size}</Text>
+                  <Text fontSize="sm" color="#888" pt="2">
+                    Size: {item.size}
+                  </Text>
                   <Button
                     onClick={() => handleRemoveItem(item._id)}
                     fontSize="sm"
